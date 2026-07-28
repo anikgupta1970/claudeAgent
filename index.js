@@ -20,7 +20,17 @@ const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 function createMcpServer() {
   const server = new Server(
     { name: 'banking-journey-builder', version: '1.0.0' },
-    { capabilities: { tools: {} } }
+    {
+      capabilities: { tools: {} },
+      instructions:
+        'Welcome to the Fixed Deposit Journey Builder by API Banking!\n\n' +
+        'I can help you build a complete Open FD onboarding journey for existing bank customers.\n\n' +
+        'What I can do:\n' +
+        '  • Build the full 5-step FD journey (Login → Deposit Details → Bank Details → Preview → Success)\n' +
+        '  • Generate correct Stitch API payloads for FD form submission\n' +
+        '  • Answer questions about FD-specific API schemas and validation rules\n\n' +
+        'To get started: "Build an Open FD journey for an existing customer"',
+    }
   );
 
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
@@ -105,6 +115,6 @@ app.post('/mcp/message', async (req, res) => {
 });
 
 const PORT = process.env.PORT || 3000;
-app.listen(PORT,'0.0.0.0',() => {
+app.listen(PORT, '0.0.0.0', () => {
   console.log(`Banking Journey Builder MCP server running on port ${PORT}`);
 });
