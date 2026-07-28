@@ -1,0 +1,110 @@
+import express from 'express';
+import { readFileSync } from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { Server } from '@modelcontextprotocol/sdk/server/index.js';
+import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
+import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import Anthropic from '@anthropic-ai/sdk';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const SYSTEM_PROMPT = readFileSync(join(__dirname, 'prompt.txt'), 'utf-8');
+
+if (!process.env.ANTHROPIC_API_KEY) {
+  console.error('ANTHROPIC_API_KEY environment variable is required');
+  process.exit(1);
+}
+
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+
+function createMcpServer() {
+  const server = new Server(
+    { name: 'banking-journey-builder', version: '1.0.0' },
+    { capabilities: { tools: {} } }
+  );
+
+  server.setRequestHandler(ListToolsRequestSchema, async () => ({
+    tools: [
+      {
+        name: 'banking_assistant',
+        description:
+          'Build banking onboarding UI journeys and generate correct Stitch API payloads. ' +
+          'Use for: building FD/SA/customer onboarding journeys, generating form payloads, ' +
+          'answering Stitch API schema questions, instruction types, section types, and config management.',
+        inputSchema: {
+          type: 'object',
+          properties: {
+            query: {
+              type: 'string',
+              description:
+                'Your request — e.g. "build an Open FD journey for existing customer" or ' +
+                '"generate a Stitch form payload to open a savings account for a new customer"',
+            },
+          },
+          required: ['query'],
+        },
+      },
+    ],
+  }));
+
+  server.setRequestHandler(CallToolRequestSchema, async (request) => {
+    if (request.params.name !== 'banking_assistant') {
+      throw new Error(`Unknown tool: ${request.params.name}`);
+    }
+
+    const { query } = request.params.arguments;
+
+    const response = await anthropic.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 8096,
+      system: SYSTEM_PROMPT,
+      messages: [{ role: 'user', content: query }],
+    });
+
+    const text = response.content
+      .filter((block) => block.type === 'text')
+      .map((block) => block.text)
+      .join('\n');
+
+    return {
+      content: [{ type: 'text', text }],
+    };
+  });
+
+  return server;
+}
+
+const app = express();
+app.use(express.json());
+
+const transports = new Map();
+
+app.get('/health', (_req, res) => {
+  res.json({ status: 'ok', service: 'banking-journey-builder' });
+});
+
+app.get('/mcp', async (req, res) => {
+  const transport = new SSEServerTransport('/mcp/message', res);
+  const mcpServer = createMcpServer();
+
+  transports.set(transport.sessionId, transport);
+  res.on('close', () => transports.delete(transport.sessionId));
+
+  await mcpServer.connect(transport);
+});
+
+app.post('/mcp/message', async (req, res) => {
+  const { sessionId } = req.query;
+  const transport = transports.get(sessionId);
+
+  if (!transport) {
+    return res.status(404).json({ error: 'Session not found' });
+  }
+
+  await transport.handlePostMessage(req, res);
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`Banking Journey Builder MCP server running on port ${PORT}`);
+});
