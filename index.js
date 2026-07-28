@@ -94,7 +94,7 @@ app.get('/health', (_req, res) => {
 });
 
 app.get('/setup', (_req, res) => {
-  const baseUrl = 'https://claudeagent-production-5aee.up.railway.app';
+  const baseUrl = 'https://claudeagent-production-fb05.up.railway.app';
 
   const mcpJson = JSON.stringify({ mcpServers: { 'banking-agent': { type: 'http', url: `${baseUrl}/mcp` } } }, null, 2);
   const settingsJson = JSON.stringify({
