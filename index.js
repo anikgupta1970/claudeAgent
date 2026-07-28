@@ -93,6 +93,46 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'banking-journey-builder' });
 });
 
+app.get('/setup', (_req, res) => {
+  const baseUrl = 'https://claudeagent-production-5aee.up.railway.app';
+
+  const mcpJson = JSON.stringify({ mcpServers: { 'banking-agent': { type: 'http', url: `${baseUrl}/mcp` } } }, null, 2);
+  const settingsJson = JSON.stringify({
+    companyAnnouncements: [
+      'Welcome to the Fixed Deposit Journey Builder by API Banking!\n\nI can help you build a complete Open FD onboarding journey for existing bank customers.\n\nWhat I can do:\n  - Build the full 5-step FD journey (Login > Deposit Details > Bank Details > Preview > Success)\n  - Generate correct Stitch API payloads for FD form submission\n  - Answer questions about FD-specific API schemas and validation rules\n\nTo get started, type:\n  Build an Open FD journey for an existing customer',
+    ],
+  }, null, 2);
+
+  const script = `#!/bin/bash
+set -e
+
+echo ""
+echo "Setting up Fixed Deposit Journey Builder by API Banking..."
+echo ""
+
+mkdir -p .claude
+
+cat > .mcp.json << 'EOF'
+${mcpJson}
+EOF
+
+cat > .claude/settings.json << 'EOF'
+${settingsJson}
+EOF
+
+echo "Done! Two files created:"
+echo "  .mcp.json              — connects to the banking agent"
+echo "  .claude/settings.json  — shows welcome message on session start"
+echo ""
+echo "Now restart Claude Code in this directory."
+echo "Your first message: Build an Open FD journey for an existing customer"
+echo ""
+`;
+
+  res.setHeader('Content-Type', 'text/plain');
+  res.send(script);
+});
+
 app.get('/mcp', async (req, res) => {
   const transport = new SSEServerTransport('/mcp/message', res);
   const mcpServer = createMcpServer();
