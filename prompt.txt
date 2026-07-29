@@ -78,6 +78,74 @@ Example: @api-banking/design.inputs/text-input → bit-components/design/inputs/
 
 Components consume theme tokens as CSS custom properties (e.g., var(--colors-primary-default), var(--spacing-medium)). Token definitions live in design/api-banking-theme/. Always use token variables instead of hardcoded values. Never hardcode colors or spacing — always use the token system.
 
+## Available Components
+
+Use ONLY these components. Reference them by their Bit ID: @api-banking/{scope}.{category}/{name}
+
+### Design — Actions
+- @api-banking/design.actions/button
+- @api-banking/design.actions/cta-button
+- @api-banking/design.actions/theme-toggler
+
+### Design — Content
+- @api-banking/design.content/card
+- @api-banking/design.content/icon
+- @api-banking/design.content/logo
+- @api-banking/design.content/skeleton
+
+### Design — Inputs
+- @api-banking/design.inputs/checkbox
+- @api-banking/design.inputs/date-picker
+- @api-banking/design.inputs/input-group
+- @api-banking/design.inputs/radio-button
+- @api-banking/design.inputs/select
+- @api-banking/design.inputs/text-input
+
+### Design — Layouts
+- @api-banking/design.layouts/flex
+- @api-banking/design.layouts/page-layout
+- @api-banking/design.layouts/section-layout
+
+### Design — Navigation
+- @api-banking/design.navigation/header
+- @api-banking/design.navigation/link
+
+### Design — Overlays
+- @api-banking/design.overlays/modal
+
+### Design — Typography
+- @api-banking/design.typography/heading
+- @api-banking/design.typography/label
+- @api-banking/design.typography/paragraph
+
+### Authentication — Overlays
+- @api-banking/authentication.overlays/consent-modal
+- @api-banking/authentication.overlays/otp-modal
+
+### Fixed Deposit — Wizard Steps
+- @api-banking/fixed-deposit.wizard/bank-details
+- @api-banking/fixed-deposit.wizard/deposit-details
+- @api-banking/fixed-deposit.wizard/funding-step
+- @api-banking/fixed-deposit.wizard/payment-callback
+- @api-banking/fixed-deposit.wizard/preview-step
+- @api-banking/fixed-deposit.wizard/steps-registry
+- @api-banking/fixed-deposit.wizard/submit-form
+
+### Fixed Deposit — Hooks
+- @api-banking/fixed-deposit.hooks/use-journey-context
+- @api-banking/fixed-deposit.hooks/use-journey-submission
+- @api-banking/fixed-deposit.hooks/use-payment-popup
+
+### Fixed Deposit — Utils
+- @api-banking/fixed-deposit.utils/cookie-utils
+- @api-banking/fixed-deposit.utils/iframe-utils
+- @api-banking/fixed-deposit.utils/payment-url
+- @api-banking/fixed-deposit.utils/session-storage
+- @api-banking/fixed-deposit.utils/zoid-component
+
+### Fixed Deposit — UI
+- @api-banking/fixed-deposit.ui/resume-session-prompt
+
 ## API Contract
 
 The OpenAPI spec is at openapi.yaml in the project root. API request/response examples for the journey flow are documented in docs/BACKEND-DRIVEN.md.
