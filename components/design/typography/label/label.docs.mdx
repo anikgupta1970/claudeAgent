@@ -1,0 +1,93 @@
+---
+description: A clear and concise label component primarily for form elements.
+labels: ['label', 'form', 'ui']
+---
+
+A clear and concise label component primarily for form elements. It should accept `htmlFor`, `children`, and `className` props. Ensure it adheres to the theme's specific styles for form labels, including font-size, weight, and color, for optimal readability and accessibility.
+
+## Component usage
+
+Use the component:
+
+```js
+<Label htmlFor="firstName">First Name</Label>
+```
+
+## Label for Mobile Number
+This example shows how to use the Label component for a mobile number input field.
+It demonstrates the association of the label with its input field using the `htmlFor` prop and basic styling for a better user experience.
+```jsx
+<div style={{ padding: '20px' }}>
+  <Label htmlFor="mobile-number">Mobile Number *</Label>
+  <input
+    id="mobile-number"
+    type="tel"
+    style={{
+      display: 'block',
+      width: '100%',
+      maxWidth: '300px',
+      padding: '10px',
+      marginTop: '4px',
+      border: '1px solid #ccc',
+      borderRadius: '4px',
+      fontFamily: 'sans-serif',
+    }}
+    placeholder="9876543210"
+  />
+</div>
+```
+
+## Label with Radio Buttons
+This example shows how to use the Label component with radio buttons for a validation method selection.
+It demonstrates the use of labels to clearly indicate the available options, enhancing usability and accessibility for users.
+```jsx
+<div style={{ padding: '20px' }}>
+  <Label>Validate using *</Label>
+  <div style={{ display: 'flex', gap: '20px', marginTop: '8px' }}>
+    <label
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        fontFamily: 'sans-serif',
+      }}
+    >
+      <input type="radio" name="validation" value="dob" defaultChecked />
+      Date of Birth
+    </label>
+    <label
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '8px',
+        fontFamily: 'sans-serif',
+      }}
+    >
+      <input type="radio" name="validation" value="pan" />
+      PAN Number
+    </label>
+  </div>
+</div>
+```
+
+## Label for Date of Birth
+This example shows how to create a Label for Date of Birth and associates it with its input field.
+```jsx
+<div style={{ padding: '20px' }}>
+  <Label htmlFor="dob">Date of Birth *</Label>
+  <input
+    id="dob"
+    type="text"
+    style={{
+      display: 'block',
+      width: '100%',
+      maxWidth: '300px',
+      padding: '10px',
+      marginTop: '4px',
+      border: '1px solid #ccc',
+      borderRadius: '4px',
+      fontFamily: 'sans-serif',
+    }}
+    placeholder="MM/DD/YYYY"
+  />
+</div>

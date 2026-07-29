@@ -1,0 +1,104 @@
+---
+description: A page component for selecting funding source and branch for Fixed Deposit booking.
+labels: ['react', 'page', 'fixed-deposit', 'form']
+---
+
+A step in the Fixed Deposit journey where users select how to fund their FD (Primary Bank, Other Bank, or Combined Funds), choose a branch, and optionally add a nominee.
+
+## Basic usage
+
+```tsx
+import { BankDetails } from '@api-banking/fixed-deposit.wizard.bank-details';
+
+export function BankDetailsStep() {
+  const handleContinue = (data) => {
+    console.log('Form data:', data);
+    // Navigate to next step
+  };
+
+  return <BankDetails onContinue={handleContinue} />;
+}
+```
+
+## Funding options
+
+The component supports three funding methods:
+
+```tsx
+export function FundingOptionsExample() {
+  return (
+    <BankDetails
+      fdAmount={50000}
+      onContinue={(data) => {
+        // data.fundingOption will be one of:
+        // 'primary-bank' - Fund entirely from primary account
+        // 'other-bank' - Fund from external bank via NEFT/RTGS
+        // 'combined-funds' - Split between primary and other bank
+      }}
+    />
+  );
+}
+```
+
+## With custom primary account
+
+```tsx
+export function CustomAccountExample() {
+  return (
+    <BankDetails
+      fdAmount={100000}
+      primaryAccount={{
+        accountNumber: '***5678',
+        accountType: 'SAVINGS ACCOUNT',
+        availableBalance: 250000,
+      }}
+      onContinue={(data) => console.log(data)}
+    />
+  );
+}
+```
+
+## Handling server validation errors
+
+Display field-specific errors returned from the server:
+
+```tsx
+export function WithServerErrorsExample() {
+  const [errors, setErrors] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleContinue = async (data) => {
+    setIsSubmitting(true);
+    const response = await submitBankDetails(data);
+    if (!response.success) {
+      setErrors(response.errors);
+      // Example errors: [{ field: 'branch', message: 'Please select a branch' }]
+    }
+    setIsSubmitting(false);
+  };
+
+  return (
+    <BankDetails
+      serverErrors={errors}
+      isSubmitting={isSubmitting}
+      onContinue={handleContinue}
+    />
+  );
+}
+```
+
+## Integration with journey context
+
+The component automatically saves form data to the journey context when submitted:
+
+```tsx
+import { AuthenticationProvider } from '@api-banking/fixed-deposit.hooks.use-journey-context';
+
+export function JourneyIntegration() {
+  return (
+    <AuthenticationProvider>
+      <BankDetails onContinue={() => navigateToPreview()} />
+    </AuthenticationProvider>
+  );
+}
+```

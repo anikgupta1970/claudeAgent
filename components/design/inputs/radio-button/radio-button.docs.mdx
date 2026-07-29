@@ -1,0 +1,75 @@
+---
+description: An accessible and visually distinct radio button component.
+labels: ['radio-button', 'ui', 'form']
+---
+
+A custom radio button component with clear visual states for checked, unchecked, and disabled options.
+
+## Component usage
+
+Use the component in forms to allow users to select one option from a list.
+
+```js
+<RadioButton
+  id="option1"
+  name="options"
+  value="value1"
+  label="Option 1"
+  onChange={() => {}}
+/>
+```
+
+## Validation Method Selection
+This example shows a group of radio buttons used to select a validation method.
+```js
+<ApiBankingTheme>
+  <div style={{ padding: '20px', backgroundColor: 'var(--colors-surface-primary)', width: 'fit-content', borderRadius: 'var(--borders-radius-medium)' }}>
+    <Label>Validate using *</Label>
+    <div style={{ display: 'flex', gap: '24px', marginTop: 'var(--spacing-small)' }}>
+      <RadioButton
+        id="dob"
+        name="validationMethod"
+        value="dob"
+        label="Date of Birth"
+        checked={false}
+        onChange={() => {}}
+      />
+      <RadioButton
+        id="pan"
+        name="validationMethod"
+        value="pan"
+        label="PAN Number"
+        checked={true}
+        onChange={() => {}}
+      />
+    </div>
+  </div>
+</ApiBankingTheme>
+```
+
+## Disabled Radio Buttons
+This example demonstrates disabled radio buttons in both checked and unchecked states.
+```js
+<ApiBankingTheme>
+  <div style={{ padding: '20px', backgroundColor: 'var(--colors-surface-primary)', width: 'fit-content', borderRadius: 'var(--borders-radius-medium)', display: 'flex', flexDirection: 'column', gap: 'var(--spacing-medium)' }}>
+    <Label>Disabled States</Label>
+    <RadioButton
+      id="disabled-unchecked"
+      name="disabled-group-1"
+      value="option1"
+      label="Disabled and Unchecked"
+      disabled
+      checked={false}
+      onChange={() => {}}
+    />
+    <RadioButton
+      id="disabled-checked"
+      name="disabled-group-2"
+      value="option2"
+      label="Disabled and Checked"
+      checked
+      disabled
+      onChange={() => {}}
+    />
+  </div>
+</ApiBankingTheme>

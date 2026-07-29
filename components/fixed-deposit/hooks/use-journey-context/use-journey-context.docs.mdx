@@ -1,0 +1,134 @@
+---
+description: A React context and hook for managing state across the Fixed Deposit journey.
+labels: ['react', 'hooks', 'context', 'fixed-deposit']
+---
+
+A context provider and hook for managing shared state throughout the Fixed Deposit journey, including form data, authentication tokens, OTP session metadata, and server validation errors.
+
+## Get started
+
+Wrap your application with the `AuthenticationProvider` to enable journey state management:
+
+```tsx
+import { AuthenticationProvider } from '@api-banking/fixed-deposit.hooks.use-journey-context';
+
+export function App() {
+  return (
+    <AuthenticationProvider>
+      <JourneyApp />
+    </AuthenticationProvider>
+  );
+}
+```
+
+## Using the context hook
+
+Access journey state in any child component using the `useJourneyContext` hook:
+
+```tsx
+import { useJourneyContext } from '@api-banking/fixed-deposit.hooks.use-journey-context';
+
+export function DepositForm() {
+  const { formData, updateFormData, isSubmitting } = useJourneyContext();
+
+  const handleSubmit = (data) => {
+    updateFormData('deposit', data);
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {/* form fields */}
+    </form>
+  );
+}
+```
+
+## Managing form data
+
+Store and retrieve form data for each step of the journey:
+
+```tsx
+export function FormDataExample() {
+  const { formData, updateFormData } = useJourneyContext();
+
+  // Update form data for a specific step
+  updateFormData('bankDetails', {
+    accountNumber: '1234567890',
+    ifscCode: 'SBIN0001234',
+  });
+
+  // Access saved form data
+  const bankDetails = formData.bankDetails;
+}
+```
+
+## Handling authentication tokens
+
+Manage access tokens and refresh tokens for authenticated API calls:
+
+```tsx
+export function AuthTokenExample() {
+  const { accessToken, setAccessToken, refreshToken, setRefreshToken } = useJourneyContext();
+
+  const handleLoginSuccess = (response) => {
+    setAccessToken(response.accessToken);
+    setRefreshToken(response.refreshToken);
+  };
+}
+```
+
+## OTP session management
+
+Handle OTP verification flow with session metadata:
+
+```tsx
+export function OtpExample() {
+  const {
+    otpSessionId,
+    setOtpSessionId,
+    otpHint,
+    setOtpHint,
+    otpLength,
+    otpMaxAttempts,
+  } = useJourneyContext();
+
+  // OTP hint displays masked phone/email (e.g., "****1234")
+  // otpLength defines expected OTP digits (default: 6)
+  // otpMaxAttempts defines retry limit (default: 3)
+}
+```
+
+## Server validation errors
+
+Manage server-side validation errors per step:
+
+```tsx
+export function ValidationErrorsExample() {
+  const { serverErrors, setServerErrors, clearServerErrors } = useJourneyContext();
+
+  // Set errors for a step
+  setServerErrors('deposit', [
+    { field: 'amount', message: 'Minimum deposit is 10,000' },
+  ]);
+
+  // Access errors for a step
+  const depositErrors = serverErrors.deposit;
+
+  // Clear errors when user corrects input
+  clearServerErrors('deposit');
+}
+```
+
+## Custom client ID
+
+Pass a custom client ID for multi-tenant configurations:
+
+```tsx
+export function CustomClientExample() {
+  return (
+    <AuthenticationProvider clientId="custom-client-id">
+      <JourneyApp />
+    </AuthenticationProvider>
+  );
+}
+```

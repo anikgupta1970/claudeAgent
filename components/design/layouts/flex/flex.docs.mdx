@@ -1,0 +1,77 @@
+---
+description: A highly configurable flexbox layout component for arranging elements in rows or columns.
+labels: ['layout', 'flex', 'ui']
+---
+
+A highly configurable flexbox layout component for arranging elements in rows or columns. Accept `as` (keyof React.JSX.IntrinsicElements), `onClick`, `className`, `style` prop to allow overriding styles and the element type.
+
+## Component usage
+
+Use the component to create a flex container:
+
+```jsx
+<Flex>
+  <div>Item 1</div>
+  <div>Item 2</div>
+</Flex>
+```
+## Row Flex Example
+This example demonstrates the default row direction of the Flex component with a gap between items.
+```jsx
+<ApiBankingTheme>
+  <Flex gap="var(--spacing-medium)" style={{ padding: '20px' }}>
+    <Box>Item 1</Box>
+    <Box>Item 2</Box>
+    <Box>Item 3</Box>
+  </Flex>
+</ApiBankingTheme>
+```
+## Column Flex Example
+This example showcases the column direction, arranging items vertically with a specified gap.
+```jsx
+<ApiBankingTheme>
+  <Flex
+    flexDirection="column"
+    gap="var(--spacing-medium)"
+    style={{ padding: '20px' }}
+  >
+    <Box>Item 1</Box>
+    <Box>Item 2</Box>
+    <Box>Item 3</Box>
+  </Flex>
+</ApiBankingTheme>
+```
+## Alignment and Justification
+Demonstrates the use of `justifyContent` and `alignItems` to control the positioning of items within the Flex container.
+```jsx
+<ApiBankingTheme>
+  <Flex flexDirection="column" gap="var(--spacing-large)" style={{ padding: '20px' }}>
+    <p style={{ fontFamily: 'var(--typography-font-family)', color: 'var(--colors-text-primary)' }}>justifyContent: 'space-between'</p>
+    <Flex
+      justifyContent="space-between"
+      style={{
+        height: '100px',
+        backgroundColor: 'var(--colors-surface-secondary)',
+        padding: 'var(--spacing-small)',
+      }}
+    >
+      <Box>Item 1</Box>
+      <Box>Item 2</Box>
+      <Box>Item 3</Box>
+    </Flex>
+    <p style={{ fontFamily: 'var(--typography-font-family)', color: 'var(--colors-text-primary)' }}>alignItems: 'center'</p>
+    <Flex
+      alignItems="center"
+      style={{
+        height: '100px',
+        backgroundColor: 'var(--colors-surface-secondary)',
+        padding: 'var(--spacing-small)',
+        gap: 'var(--spacing-small)',
+      }}
+    >
+      <Box style={{ height: '30px' }}>Item 1</Box>
+      <Box>Item 2</Box>
+      <Box style={{ height: '40px' }}>Item 3</Box>
+    </Flex>
+  </Flex>
+</ApiBankingTheme>

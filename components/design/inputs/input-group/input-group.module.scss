@@ -1,0 +1,14 @@
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  box-sizing: border-box; // Ensure consistent box model
+}
+
+.bottomText {
+  margin-top: var(--spacing-small);
+}
+
+.errorText {
+  color: var(--colors-status-negative-default);
+}

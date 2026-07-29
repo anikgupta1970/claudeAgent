@@ -1,0 +1,178 @@
+---
+description: A React hook for handling API submissions with loading state and error handling.
+labels: ['react', 'hooks', 'api', 'fixed-deposit']
+---
+
+A generic hook for making API requests during the Fixed Deposit journey, with built-in loading state, error handling, and validation error support.
+
+## Basic usage
+
+Create a submission handler for any API endpoint:
+
+```tsx
+import { useJourneySubmission } from '@api-banking/fixed-deposit.hooks.use-journey-submission';
+
+export function DepositForm() {
+  const { submit, isLoading, errors } = useJourneySubmission({
+    endpoint: '/api/auth/deposit',
+    method: 'PUT',
+    requiresAuth: true,
+  });
+
+  const handleSubmit = async (data) => {
+    const success = await submit(data, accessToken);
+    if (success) {
+      // Navigate to next step
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      {errors.length > 0 && (
+        <div className="errors">
+          {errors.map((e) => <p key={e.field}>{e.message}</p>)}
+        </div>
+      )}
+      {/* form fields */}
+      <button disabled={isLoading}>Submit</button>
+    </form>
+  );
+}
+```
+
+## Configuration options
+
+The hook accepts the following options:
+
+```tsx
+export function OptionsExample() {
+  const { submit, isLoading, errors, clearErrors } = useJourneySubmission({
+    endpoint: '/api/auth/deposit',    // API endpoint path
+    method: 'PUT',                     // HTTP method (GET, PUT, POST)
+    requiresAuth: true,                // Include Bearer token in headers
+    clientId: 'my-client-id',          // Custom client ID header
+    onSuccess: (response) => {         // Success callback
+      console.log('Success:', response);
+    },
+    onError: (errors) => {             // Error callback
+      console.log('Errors:', errors);
+    },
+  });
+}
+```
+
+## Submit function
+
+The `submit` function accepts optional data and access token:
+
+```tsx
+// For POST/PUT requests with data
+await submit({ amount: '50000', tenure: '12' }, accessToken);
+
+// For GET requests (no body)
+await submit(undefined, accessToken);
+
+// For public endpoints (no auth)
+await submit(data);
+```
+
+Returns `true` on success, `false` on error.
+
+## Handling validation errors
+
+Display field-specific validation errors returned from the server:
+
+```tsx
+export function ValidationExample() {
+  const { submit, errors, clearErrors } = useJourneySubmission({
+    endpoint: '/api/auth/deposit',
+  });
+
+  // errors is an array of { field: string, message: string }
+  const getFieldError = (field) => errors.find((e) => e.field === field)?.message;
+
+  return (
+    <form>
+      <input name="amount" />
+      {getFieldError('amount') && (
+        <p className="error">{getFieldError('amount')}</p>
+      )}
+
+      <button onClick={clearErrors}>Reset Errors</button>
+    </form>
+  );
+}
+```
+
+## Helper hooks
+
+Pre-configured hooks for common API operations:
+
+### useTermsFetch
+
+Fetch terms and conditions (GET, no auth):
+
+```tsx
+import { useTermsFetch } from '@api-banking/fixed-deposit.hooks.use-journey-submission';
+
+export function TermsExample() {
+  const { submit, isLoading } = useTermsFetch();
+
+  useEffect(() => {
+    submit().then((success) => {
+      // Handle terms data
+    });
+  }, []);
+}
+```
+
+### useLoginAuthorize
+
+Submit login credentials (POST, no auth):
+
+```tsx
+import { useLoginAuthorize } from '@api-banking/fixed-deposit.hooks.use-journey-submission';
+
+export function LoginExample() {
+  const { submit, isLoading, errors } = useLoginAuthorize();
+
+  const handleLogin = async (credentials) => {
+    const success = await submit(credentials);
+    if (success) {
+      // Proceed to OTP verification
+    }
+  };
+}
+```
+
+### useTokenExchange
+
+Exchange authorization code for tokens (POST, no auth):
+
+```tsx
+import { useTokenExchange } from '@api-banking/fixed-deposit.hooks.use-journey-submission';
+
+export function TokenExample() {
+  const { submit } = useTokenExchange();
+
+  const exchangeToken = async (authCode) => {
+    const success = await submit({ code: authCode });
+  };
+}
+```
+
+### useJourneyConfig
+
+Fetch journey configuration (GET, requires auth):
+
+```tsx
+import { useJourneyConfig } from '@api-banking/fixed-deposit.hooks.use-journey-submission';
+
+export function ConfigExample() {
+  const { submit, isLoading } = useJourneyConfig();
+
+  const loadConfig = async (accessToken) => {
+    const success = await submit(undefined, accessToken);
+  };
+}
+```

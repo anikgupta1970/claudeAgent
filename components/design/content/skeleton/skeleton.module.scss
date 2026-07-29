@@ -1,0 +1,34 @@
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background-color: var(--colors-surface-secondary);
+  background-image: linear-gradient(
+    90deg,
+    var(--colors-surface-secondary) 25%,
+    var(--colors-surface-primary) 50%,
+    var(--colors-surface-secondary) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite ease-in-out;
+}
+
+.text {
+  display: inline-block;
+  width: 100%;
+  height: 16px;
+  border-radius: var(--borders-radius-small);
+}
+
+.rectangular {
+  display: block;
+  width: 100%;
+  height: 100px;
+  border-radius: var(--borders-radius-medium);
+}

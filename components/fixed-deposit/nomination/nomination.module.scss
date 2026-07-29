@@ -1,0 +1,142 @@
+.nomineeSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.nomineeCheckbox {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-small);
+  cursor: pointer;
+}
+
+.nomineeCard {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: var(--spacing-medium);
+  background-color: var(--colors-surface-primary);
+  border: 1px solid var(--borders-default-color);
+  border-radius: var(--borders-radius-medium);
+  margin-top: var(--spacing-small);
+}
+
+.nomineeCardContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  flex: 1;
+}
+
+.nomineeCardRow {
+  display: flex;
+  gap: var(--spacing-xl);
+}
+
+.nomineeCardField {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nomineeCardLabel {
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-secondary-default);
+}
+
+.nomineeCardValue {
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+}
+
+.nomineeCardActions {
+  display: flex;
+  gap: var(--spacing-small);
+  align-items: center;
+}
+
+.nomineeEditButton,
+.nomineeDeleteButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: var(--borders-radius-small);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--interactions-transitions-duration-fast) ease;
+
+  &:hover {
+    background-color: var(--colors-surface-secondary);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.nomineeEditButton {
+  color: var(--colors-secondary-default);
+}
+
+.nomineeDeleteButton {
+  color: var(--colors-status-negative-default);
+}
+
+.nomineeModal {
+  & > div:last-child {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+}
+
+.modalContent {
+  flex: 1;
+  padding: var(--spacing-large);
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+}
+
+.modalFooter {
+  padding: var(--spacing-large);
+  border-top: 1px solid var(--borders-default-color);
+}
+
+.formField {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+  position: relative;
+}
+
+.formLabel {
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-secondary-default);
+}
+
+.guardianSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+  border-top: 1px solid var(--borders-default-color);
+  padding-top: var(--spacing-medium);
+  margin-top: var(--spacing-small);
+}
+
+.guardianHeading {
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+}
+
+.guardianNote {
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-secondary-default);
+}

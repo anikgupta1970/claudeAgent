@@ -1,0 +1,104 @@
+.selectContainer {
+  position: relative;
+  width: 100%;
+}
+
+.selectTrigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-medium);
+  width: 100%;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  transition: border-color var(--interactions-transitions-duration-fast) ease-in-out,
+    box-shadow var(--interactions-transitions-duration-fast) ease-in-out;
+
+  &:hover {
+    border-color: var(--borders-focus-color);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--borders-focus-color);
+    box-shadow: 0 0 0 var(--borders-focus-offset) var(--borders-focus-color);
+  }
+}
+
+.selectContainer[data-open] .selectTrigger {
+  border-color: var(--borders-focus-color);
+  box-shadow: 0 0 0 var(--borders-focus-offset) var(--borders-focus-color);
+}
+
+.selectContainer[data-invalid] .selectTrigger {
+  border-color: var(--colors-status-negative-default);
+}
+
+.selectContainer[data-disabled] .selectTrigger {
+  background-color: var(--colors-surface-secondary);
+  cursor: var(--interactions-cursor-disabled);
+  opacity: var(--effects-opacity-disabled);
+}
+
+.selectPlaceholder {
+  font-size: var(--typography-sizes-body-default);
+  font-family: var(--typography-font-family);
+  color: var(--colors-text-secondary);
+}
+
+.selectValue {
+  font-size: var(--typography-sizes-body-default);
+  font-family: var(--typography-font-family);
+  color: var(--colors-text-default);
+}
+
+.selectArrow {
+  display: flex;
+  align-items: center;
+  color: var(--colors-text-secondary);
+  transition: transform var(--interactions-transitions-duration-fast) ease-in-out;
+}
+
+.selectContainer[data-open] .selectArrow {
+  transform: rotate(180deg);
+}
+
+.selectPopover {
+  background-color: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-medium);
+  box-shadow: var(--effects-shadows-medium);
+  overflow: hidden;
+  max-height: 200px;
+  overflow-y: auto;
+  width: var(--trigger-width);
+  pointer-events: auto;
+}
+
+.selectOptions {
+  outline: none;
+}
+
+.selectOption {
+  padding: var(--spacing-medium);
+  font-size: var(--typography-sizes-body-default);
+  font-family: var(--typography-font-family);
+  color: var(--colors-text-default);
+  cursor: pointer;
+  outline: none;
+  transition: background-color var(--interactions-transitions-duration-fast) ease-in-out;
+
+  &[data-hovered] {
+    background-color: var(--colors-surface-secondary);
+  }
+
+  &[data-selected] {
+    background-color: var(--colors-secondary-subtle);
+    color: var(--colors-secondary-default);
+  }
+}

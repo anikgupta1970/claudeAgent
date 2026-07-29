@@ -1,0 +1,46 @@
+---
+description: A factory function that creates a configured UiComponentRegistry with all journey components registered.
+---
+
+import { createStepsRegistry } from './steps-registry';
+
+## Overview
+
+The `createStepsRegistry` function creates and returns a configured `UiComponentRegistry` with all the journey components registered, including:
+
+- `LoginPage` - Login page with OTP flow
+- `OtpModal` - Standalone OTP modal
+- `Stepper` - Step navigation component
+- `OtpStep` - OTP step wrapper
+- `DepositDetails` - Deposit details form
+- `BankDetails` - Bank details form
+- `PreviewStep` - Preview step component
+- `SubmitStep` - Submit step with auto-submission
+
+## Basic usage
+
+```tsx
+import { createStepsRegistry } from '@api-banking/fixed-deposit.steps-registry';
+import { Stepper } from '@api-banking/fixed-deposit.fixed-deposit-flow-app/stepper.js';
+
+// Create the registry with the Stepper component
+const registry = createStepsRegistry({ Stepper });
+
+// Use with DynamicUIEngine
+const engine = new DynamicUIEngine({
+  componentRegistry: registry,
+  themeProvider,
+  routerProvider
+});
+```
+
+## API
+
+### createStepsRegistry(options)
+
+Creates a new `UiComponentRegistry` instance with all journey components registered.
+
+**Parameters:**
+- `options.Stepper` - The Stepper component to use for step navigation
+
+**Returns:** `UiComponentRegistry` instance with registered components
