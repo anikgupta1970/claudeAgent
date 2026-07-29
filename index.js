@@ -11,31 +11,73 @@ import { readdirSync, statSync } from 'fs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-function loadComponentExports(componentsDir) {
+function loadFiles(componentsDir) {
   const entries = [];
-  function walk(dir) {
+  function walk(dir, filter) {
     for (const entry of readdirSync(dir)) {
       const full = join(dir, entry);
       if (statSync(full).isDirectory()) {
-        walk(full);
-      } else if (entry === 'index.ts') {
+        walk(full, filter);
+      } else if (filter(entry, full)) {
         const rel = full.replace(componentsDir + '/', '');
         const content = readFileSync(full, 'utf-8');
         entries.push(`// ${rel}\n${content}`);
       }
     }
   }
-  walk(componentsDir);
+  walk(componentsDir, (entry) => entry === 'index.ts');
   return entries.join('\n\n');
 }
 
+function readSource(relPath) {
+  return readFileSync(join(__dirname, 'components', relPath), 'utf-8');
+}
+
 const basePrompt = readFileSync(join(__dirname, 'prompt.txt'), 'utf-8');
-const componentExports = loadComponentExports(join(__dirname, 'components'));
+const componentExports = loadFiles(join(__dirname, 'components'));
+
+const UI_REFERENCE_FILES = [
+  'authentication/login/login.tsx',
+  'authentication/overlays/consent-modal/consent-modal.tsx',
+  'authentication/overlays/otp-modal/otp-modal.tsx',
+  'fixed-deposit/wizard/deposit-details/deposit-details.tsx',
+  'fixed-deposit/wizard/bank-details/bank-details.tsx',
+  'fixed-deposit/wizard/funding-step/funding-step.tsx',
+  'fixed-deposit/wizard/preview-step/preview-step.tsx',
+  'fixed-deposit/wizard/submit-form/submit-form.tsx',
+  'fixed-deposit/wizard/steps-registry/steps-registry.tsx',
+  'stitch/branch-selector/branch-selector.tsx',
+  'stitch/branch-selector/branch-selector-base.tsx',
+];
+
+const uiReference = UI_REFERENCE_FILES
+  .map(f => `// ${f}\n${readSource(f)}`)
+  .join('\n\n');
+
+const stitchClient = readSource('stitch/stitch-client/stitch-client.ts');
+
 const SYSTEM_PROMPT = `${basePrompt}
 
 ---
 
-# PART 4 — Component Public Exports (index.ts files)
+# PART 4 — Stitch API Client (use this when making API calls)
+
+This is the existing typed API client. Always use createStitchClient and its methods instead of writing raw fetch calls.
+Configure baseUrl using the VITE_STITCH_API_BASE_URL environment variable, which should be set to https://mahendra-shetake.mocks.apibanking.com.
+
+${stitchClient}
+
+---
+
+# PART 5 — Existing UI Implementations (reference these exactly)
+
+These are the actual implemented components. When building any journey, replicate these patterns exactly — same structure, same design tokens, same component usage, same props. Do not deviate from these implementations.
+
+${uiReference}
+
+---
+
+# PART 6 — Component Public Exports (index.ts files)
 
 When generating imports, use ONLY what is exported here. Do not invent exports that are not listed.
 
