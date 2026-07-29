@@ -6,7 +6,7 @@ When generating code, always use the Bit components from the api-banking workspa
 
 # PART 3 — Bit Workspace Architecture (fd-flow)
 
-## Build & Development Commands
+## Build & Development Commands list
 
 This is a Bit monorepo. Install Bit first if not available: `npx @teambit/bvm install`
 
