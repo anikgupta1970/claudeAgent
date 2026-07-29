@@ -98,7 +98,13 @@ function createMcpServer() {
     const response = await anthropic.messages.create({
       model: 'claude-sonnet-4-6',
       max_tokens: 8096,
-      system: SYSTEM_PROMPT,
+      system: [
+        {
+          type: 'text',
+          text: SYSTEM_PROMPT,
+          cache_control: { type: 'ephemeral' },
+        },
+      ],
       messages: [{ role: 'user', content: query }],
     });
 
