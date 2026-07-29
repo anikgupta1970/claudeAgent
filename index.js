@@ -7,8 +7,39 @@ import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import Anthropic from '@anthropic-ai/sdk';
 
+import { readdirSync, statSync } from 'fs';
+
 const __dirname = dirname(fileURLToPath(import.meta.url));
-const SYSTEM_PROMPT = readFileSync(join(__dirname, 'prompt.txt'), 'utf-8');
+
+function loadComponentExports(componentsDir) {
+  const entries = [];
+  function walk(dir) {
+    for (const entry of readdirSync(dir)) {
+      const full = join(dir, entry);
+      if (statSync(full).isDirectory()) {
+        walk(full);
+      } else if (entry === 'index.ts') {
+        const rel = full.replace(componentsDir + '/', '');
+        const content = readFileSync(full, 'utf-8');
+        entries.push(`// ${rel}\n${content}`);
+      }
+    }
+  }
+  walk(componentsDir);
+  return entries.join('\n\n');
+}
+
+const basePrompt = readFileSync(join(__dirname, 'prompt.txt'), 'utf-8');
+const componentExports = loadComponentExports(join(__dirname, 'components'));
+const SYSTEM_PROMPT = `${basePrompt}
+
+---
+
+# PART 4 — Component Public Exports (index.ts files)
+
+When generating imports, use ONLY what is exported here. Do not invent exports that are not listed.
+
+${componentExports}`;
 
 if (!process.env.ANTHROPIC_API_KEY) {
   console.error('ANTHROPIC_API_KEY environment variable is required');
