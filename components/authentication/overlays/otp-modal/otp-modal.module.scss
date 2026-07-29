@@ -1,0 +1,50 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-default);
+  text-align: center;
+}
+
+.message {
+  text-align: left;
+  color: var(--colors-text-primary);
+}
+
+.otpInputContainer {
+  justify-content: center;
+  gap: 10px;
+  margin: 4px 0;
+}
+
+.otpInput {
+  // Styles for the native input element used for OTP digits
+  width: 45px;
+  height: 56px;
+  text-align: center;
+  font-size: var(--typography-sizes-heading-h5);
+  font-weight: var(--typography-font-weight-medium);
+  border: 1px solid var(--borders-default-color);
+  border-radius: var(--borders-radius-medium);
+  background-color: var(--colors-surface-background);
+  padding: 0; // Ensures consistent height
+  outline: none;
+  transition:
+    border-color var(--interactions-transitions-duration-fast) ease-in-out,
+    box-shadow var(--interactions-transitions-duration-fast) ease-in-out;
+  color: var(--colors-text-default);
+  box-sizing: border-box; // Include padding and border in the element's total width and height
+
+  &:focus {
+    border-color: var(--borders-focus-color);
+    box-shadow: 0 0 0 var(--borders-focus-offset) var(--borders-focus-color);
+  }
+}
+
+.hint {
+  text-align: center;
+}
+
+.submitButton {
+  width: 100%;
+  margin-top: var(--spacing-small);
+}

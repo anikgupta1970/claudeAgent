@@ -1,0 +1,159 @@
+---
+description: An OTP verification modal with configurable length and server error handling.
+labels: ['react', 'modal', 'otp', 'verification', 'authentication']
+---
+
+A modal component for OTP (One-Time Password) verification with individual digit inputs, paste support, and server error display.
+
+## Basic usage
+
+```tsx
+import { OtpModal } from '@api-banking/authentication.overlays.otp-modal';
+
+export function OtpExample() {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleOtpSubmit = (otp) => {
+    console.log('OTP submitted:', otp);
+    // Verify OTP with server
+  };
+
+  return (
+    <OtpModal
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+      hint="OTP has been sent to xxxx3210"
+      onOtpSubmit={handleOtpSubmit}
+    />
+  );
+}
+```
+
+## Using hint from API response
+
+The `hint` prop displays the message returned from the authorization API:
+
+```tsx
+export function WithApiHint() {
+  // Response from /login/authorize contains hint
+  const [otpConfig, setOtpConfig] = useState(null);
+
+  const handleLogin = async (credentials) => {
+    const response = await loginAuthorize(credentials);
+    setOtpConfig({
+      sessionId: response.sessionId,
+      hint: response.hint,           // "OTP has been sent to xxxx3210"
+      otpLength: response.otpLength, // 6
+    });
+  };
+
+  return otpConfig && (
+    <OtpModal
+      isOpen={true}
+      onClose={() => setOtpConfig(null)}
+      hint={otpConfig.hint}
+      otpLength={otpConfig.otpLength}
+      onOtpSubmit={(otp) => verifyOtp(otpConfig.sessionId, otp)}
+    />
+  );
+}
+```
+
+## Custom OTP length
+
+Configure the expected number of OTP digits:
+
+```tsx
+// 4-digit OTP
+<OtpModal
+  isOpen={true}
+  onClose={handleClose}
+  otpLength={4}
+  hint="Enter your 4-digit PIN"
+  onOtpSubmit={handleSubmit}
+/>
+```
+
+## Handling server validation errors
+
+Display errors returned from OTP verification:
+
+```tsx
+export function WithErrorHandling() {
+  const [errors, setErrors] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleOtpSubmit = async (otp) => {
+    setIsSubmitting(true);
+    setErrors([]);
+
+    const response = await verifyOtp(sessionId, otp);
+    if (!response.valid) {
+      setErrors(response.errors);
+      // Example: [{ field: 'otp', message: 'Invalid OTP. 2 attempts remaining.' }]
+    }
+    setIsSubmitting(false);
+  };
+
+  return (
+    <OtpModal
+      isOpen={true}
+      onClose={handleClose}
+      hint="OTP sent to xxxx3210"
+      onOtpSubmit={handleOtpSubmit}
+      serverErrors={errors}
+      isSubmitting={isSubmitting}
+    />
+  );
+}
+```
+
+## Full integration example
+
+Complete login flow with OTP verification:
+
+```tsx
+export function LoginWithOtp() {
+  const [showOtp, setShowOtp] = useState(false);
+  const [otpConfig, setOtpConfig] = useState(null);
+  const [errors, setErrors] = useState([]);
+
+  const handleLogin = async (loginData) => {
+    const response = await loginAuthorize(loginData);
+    if (response.sessionId) {
+      setOtpConfig({
+        sessionId: response.sessionId,
+        hint: response.hint,
+        otpLength: response.otpLength,
+      });
+      setShowOtp(true);
+    }
+  };
+
+  const handleOtpSubmit = async (otp) => {
+    const response = await loginToken(otpConfig.sessionId, otp);
+    if (response.accessToken) {
+      // Login successful
+      setShowOtp(false);
+    } else {
+      setErrors(response.errors);
+    }
+  };
+
+  return (
+    <>
+      <LoginPage onContinue={handleLogin} />
+      {showOtp && (
+        <OtpModal
+          isOpen={showOtp}
+          onClose={() => setShowOtp(false)}
+          hint={otpConfig.hint}
+          otpLength={otpConfig.otpLength}
+          onOtpSubmit={handleOtpSubmit}
+          serverErrors={errors}
+        />
+      )}
+    </>
+  );
+}
+```
