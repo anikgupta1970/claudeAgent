@@ -1,0 +1,67 @@
+---
+description: A modal component for displaying consent information and actions.
+labels: ['modal', 'consent', 'api-banking']
+---
+
+A modal component designed to present consent details to the user, providing options to agree or disagree.
+
+## Component usage
+
+Use the component to display consent information:
+
+```jsx
+<ConsentModal
+  isOpen={true}
+  title="Consent Agreement"
+  summary="Please read and agree to our terms and conditions."
+  documentLink="https://example.com/terms"
+  onClose={() => {}}
+  onAgree={() => {}}
+  onDisagree={() => {}}
+/>
+```
+## Basic Example
+A basic implementation of the `ConsentModal` component with minimal configuration.
+It shows the modal with a title, summary, and links to the document, along with Accept and Cancel buttons.
+```jsx
+<ConsentModal
+  isOpen={true}
+  title="Data Privacy Consent"
+  summary="By proceeding, you agree to our data privacy policy."
+  documentLink="https://example.com/privacy"
+  onClose={() => {}}
+  onAgree={() => {}}
+  onDisagree={() => {}}
+/>
+```
+## Customized Content Example
+An example demonstrating the flexibility of the `ConsentModal` component by using custom content for the summary.
+This allows for richer text formatting and the inclusion of links or other React components within the summary.
+```jsx
+<ConsentModal
+  isOpen={true}
+  title="Terms of Service"
+  summary={
+    <>
+      I agree to the <Link href="https://example.com/terms">Terms of Service</Link> and{' '}
+      <Link href="https://example.com/privacy">Privacy Policy</Link>.
+    </>
+  }
+  documentLink="https://example.com/full-terms"
+  onClose={() => {}}
+  onAgree={() => {}}
+  onDisagree={() => {}}
+/>
+```
+## Handling Actions Example
+This example shows how to handle agree and disagree actions.
+```jsx
+<ConsentModal
+  isOpen={true}
+  title="Marketing Consent"
+  summary="Do you agree to receive marketing emails from us?"
+  documentLink="https://example.com/marketing-details"
+  onClose={() => {}}
+  onAgree={() => alert('User agreed to marketing consent')}
+  onDisagree={() => alert('User disagreed to marketing consent')}
+/>
