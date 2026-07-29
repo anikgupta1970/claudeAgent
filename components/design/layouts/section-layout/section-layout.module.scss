@@ -1,0 +1,26 @@
+.sectionLayout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-large);
+  width: 100%;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.subtitle {
+  color: var(--colors-text-secondary);
+}
+
+.caption {
+  /* The 'muted' variant on Paragraph already handles styling for secondary text. */
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-large);
+}

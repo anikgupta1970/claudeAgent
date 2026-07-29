@@ -1,0 +1,123 @@
+---
+description: A page component for configuring Fixed Deposit details including type, amount, tenure, and payout options.
+labels: ['react', 'page', 'fixed-deposit', 'form']
+---
+
+A step in the Fixed Deposit journey where users configure their FD parameters: deposit type, amount, interest payout frequency, maturity instructions, and tenure.
+
+## Basic usage
+
+```tsx
+import { DepositDetails } from '@api-banking/fixed-deposit.wizard.deposit-details';
+
+export function DepositDetailsStep() {
+  const handleContinue = (data) => {
+    console.log('Deposit config:', data);
+    // Navigate to bank details step
+  };
+
+  return <DepositDetails onContinue={handleContinue} />;
+}
+```
+
+## FD types
+
+Users can choose between two deposit types:
+
+```tsx
+export function FdTypesExample() {
+  return (
+    <DepositDetails
+      onContinue={(data) => {
+        // data.fdType will be:
+        // 'withdrawable' - Premature withdrawal allowed with penalty
+        // 'non-withdrawable' - Lock-in period, higher interest rates
+      }}
+    />
+  );
+}
+```
+
+## Interest payout options
+
+Three payout frequency options are available:
+
+- **At Maturity** - For short term FDs (7 to 180 days)
+- **Monthly** - Interest credited every month
+- **Quarterly** - Interest credited every 3 months
+
+## Maturity instructions
+
+Configure what happens when the FD matures:
+
+- `DO_NOT_RENEW` - Transfer amount to source account
+- `RENEW_PRINCIPAL` - Renew only the principal amount
+- `RENEW_PRINCIPAL_AND_INTEREST` - Renew principal plus accrued interest
+
+## With customer data
+
+Display masked customer information:
+
+```tsx
+export function WithCustomerDataExample() {
+  return (
+    <DepositDetails
+      customerData={{
+        fullName: '***ith',
+        dateOfBirth: '1985',
+        pan: '***2K',
+      }}
+      onContinue={(data) => console.log(data)}
+    />
+  );
+}
+```
+
+## Handling server validation errors
+
+```tsx
+export function WithServerErrorsExample() {
+  const [errors, setErrors] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleContinue = async (data) => {
+    setIsSubmitting(true);
+    const response = await submitDepositDetails(data);
+    if (!response.success) {
+      setErrors(response.errors);
+      // Example: [{ field: 'amount', message: 'Minimum deposit is 5000' }]
+    }
+    setIsSubmitting(false);
+  };
+
+  return (
+    <DepositDetails
+      serverErrors={errors}
+      isSubmitting={isSubmitting}
+      onContinue={handleContinue}
+    />
+  );
+}
+```
+
+## Validation constraints
+
+- **Amount**: Min ₹5,000 | Max ₹1,000,000,000
+- **Tenure**: Min 7 days | Max 10 years
+- **At Maturity payout**: Tenure must be 7-180 days
+
+## Integration with journey context
+
+The component saves form data to the journey context when submitted:
+
+```tsx
+import { AuthenticationProvider } from '@api-banking/fixed-deposit.hooks.use-journey-context';
+
+export function JourneyIntegration() {
+  return (
+    <AuthenticationProvider>
+      <DepositDetails onContinue={() => navigateToBankDetails()} />
+    </AuthenticationProvider>
+  );
+}
+```

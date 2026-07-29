@@ -1,0 +1,46 @@
+---
+description: An intuitive and accessible date picker component.
+labels: ['date-picker', 'form', 'ui']
+---
+
+An intuitive and accessible date picker component that allows users to select a date from a calendar interface.
+It integrates with the application's theme and provides a seamless user experience.
+
+## Component usage
+
+Use the component:
+
+```js
+<DatePicker
+  value={selectedDate}
+  onChange={setSelectedDate}
+  placeholder="Date of Birth (MM/DD/YYYY)"
+/>
+```
+### Interactive Date Picker
+Allows users to select their date of birth. The calendar opens on icon click.
+```js
+<DatePicker
+    value={selectedDate}
+    onChange={setSelectedDate}
+    placeholder="Date of Birth (MM/DD/YYYY)"
+/>
+```
+### Date Picker With Pre-selected Date
+Useful for forms where a user's date of birth is pre-filled and can be edited.
+```js
+const initialDate = new Date(1990, 0, 1);
+<DatePicker
+    value={selectedDate}
+    onChange={setSelectedDate}
+/>
+```
+### Disabled State
+The component is non-interactive, used for displaying a date in a read-only context.
+```js
+const disabledDate = new Date(2005, 10, 20);
+<DatePicker
+    value={disabledDate}
+    onChange={() => {}} // No-op
+    disabled
+/>

@@ -1,0 +1,90 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.calculateButton {
+  background-color: var(--colors-primary-default);
+  color: white;
+  border: none;
+  border-radius: var(--borders-radius-medium);
+  padding: 12px 24px;
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  font-family: var(--typography-font-family);
+  cursor: pointer;
+  transition: background-color var(--interactions-transitions-duration-fast) ease;
+  margin-top: var(--spacing-medium);
+
+  &:hover:not(:disabled) {
+    background-color: var(--colors-primary-active);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.calculateHelperText {
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-secondary);
+  margin-top: var(--spacing-small);
+}
+
+.errorBox {
+  background-color: var(--colors-status-negative-subtle);
+  border-color: var(--colors-status-negative-default);
+  padding: var(--spacing-medium);
+  margin-top: var(--spacing-medium);
+  border-radius: var(--borders-radius-small);
+}
+
+.errorText {
+  color: var(--colors-status-negative-default);
+}
+
+.calculationResult {
+  margin-top: var(--spacing-large);
+  padding: var(--spacing-large);
+  background-color: var(--colors-status-positive-subtle);
+  border-color: var(--colors-status-positive-default);
+  border-radius: var(--borders-radius-medium);
+}
+
+.resultTitle {
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+  color: var(--colors-text-primary);
+  margin: 0 0 var(--spacing-medium) 0;
+}
+
+.resultGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-medium);
+}
+
+.resultItem {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.resultLabel {
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-secondary);
+}
+
+.resultValue {
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-primary);
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.resultValueHighlight {
+  font-size: var(--typography-sizes-body-large);
+  color: var(--colors-status-positive-default);
+  font-weight: var(--typography-font-weight-semi-bold);
+}

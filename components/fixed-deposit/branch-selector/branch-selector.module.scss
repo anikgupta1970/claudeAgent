@@ -1,0 +1,139 @@
+.branchSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-small);
+}
+
+.branchSelector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border: 1px solid var(--borders-default-color);
+  border-radius: var(--borders-radius-medium);
+  background: var(--colors-surface-primary);
+  cursor: pointer;
+  transition: border-color var(--interactions-transitions-duration-fast) ease;
+
+  &:hover:not(.disabled) {
+    border-color: var(--colors-secondary-default);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--colors-secondary-default);
+  }
+
+  &.hasValue {
+    border-color: var(--colors-secondary-default);
+  }
+
+  &.inputError {
+    border-color: var(--colors-status-negative-default);
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    background: var(--colors-surface-secondary);
+  }
+}
+
+.branchPlaceholder {
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-secondary);
+}
+
+.helpText {
+  font-size: var(--typography-sizes-caption-default);
+  color: var(--colors-text-secondary);
+  margin-top: var(--spacing-small);
+}
+
+.branchValue {
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-primary);
+}
+
+.branchSearchIcon {
+  color: var(--colors-text-secondary);
+}
+
+.branchModal {
+  & > div:last-child {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .modalContent {
+    flex: 1;
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-medium);
+    padding: var(--spacing-large);
+  }
+
+  .modalFooter {
+    flex-shrink: 0;
+  }
+}
+
+.modalContent {
+  flex: 1;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+}
+
+.modeToggle {
+  display: flex;
+  gap: var(--spacing-large);
+  padding-bottom: var(--spacing-small);
+}
+
+.locationFields,
+.pincodeFields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-medium);
+}
+
+.helperText {
+  font-size: var(--typography-sizes-caption-default);
+  margin-top: var(--spacing-small);
+}
+
+.branchDetailsCard {
+  margin-top: var(--spacing-small);
+  padding: var(--spacing-medium);
+}
+
+.cardTitle {
+  margin-bottom: var(--spacing-small);
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-semibold);
+}
+
+.branchAddress {
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-primary);
+  margin-bottom: var(--spacing-small);
+}
+
+.ifscCode {
+  font-size: var(--typography-sizes-body-default);
+  color: var(--colors-text-primary);
+}
+
+.ifscValue {
+  color: var(--colors-primary-default);
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.modalFooter {
+  padding: var(--spacing-large);
+  border-top: 1px solid var(--borders-default-color);
+}

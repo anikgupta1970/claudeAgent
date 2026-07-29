@@ -1,0 +1,25 @@
+---
+description: A header component with logo and language selector.
+---
+
+import { Header } from './header';
+
+## Basic usage
+
+Renders a header with the brand logo on the left and a language dropdown on the right:
+
+```js live
+<Header />
+```
+
+### With custom languages
+
+```js live
+<Header
+  languages={[
+    { value: 'en', label: 'English' },
+    { value: 'hi', label: 'Hindi' },
+    { value: 'ta', label: 'Tamil' },
+  ]}
+/>
+```

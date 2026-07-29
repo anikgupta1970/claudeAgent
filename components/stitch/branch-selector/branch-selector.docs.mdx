@@ -1,0 +1,114 @@
+---
+description: A branch selector component with cascading state/city/branch dropdowns and PIN code search.
+labels: ['react', 'form', 'selector', 'branch', 'banking']
+---
+
+import { BranchSelectorDefault, BranchSelectorBaseWithCustomData } from './branch-selector.composition';
+
+A modal-based branch selector that supports two selection modes:
+- **Location mode**: Cascading dropdowns for State → City → Branch
+- **PinCode mode**: Search branches by PIN code
+
+The component comes in two variants for different use cases.
+
+## Smart Component
+
+`BranchSelector` includes built-in state/city data (MH, DL, KA) and handles the cascading logic internally.
+
+```jsx
+import { BranchSelector } from '@api-banking/stitch.branch-selector';
+
+function MyForm() {
+  const [branch, setBranch] = useState('');
+  const [branches, setBranches] = useState([]);
+
+  const handleFilterChange = (filters) => {
+    // Fetch branches from API based on filters.state, filters.city, or filters.pin
+    fetchBranches(filters).then(setBranches);
+  };
+
+  return (
+    <BranchSelector
+      value={branch}
+      onChange={setBranch}
+      branches={branches}
+      onFilterChange={handleFilterChange}
+    />
+  );
+}
+```
+
+<BranchSelectorDefault />
+
+### API Client
+
+The smart component uses [`@api-banking/fixed-deposit.api-client`](https://bit.cloud/api-banking/fixed-deposit/api-client) for all API requests. Authentication is handled internally by the api-client component, so you don't need to manage tokens or headers manually.
+
+## Presentational Component
+
+`BranchSelectorBase` gives you full control over the states and cities data. Use this when you need custom locations or want to fetch state/city lists from an API.
+
+```jsx
+import { BranchSelectorBase } from '@api-banking/stitch.branch-selector';
+
+const MY_STATES = [
+  { value: 'GJ', label: 'Gujarat' },
+  { value: 'RJ', label: 'Rajasthan' },
+];
+
+function MyForm() {
+  const [branch, setBranch] = useState('');
+  const [cities, setCities] = useState([]);
+  const [branches, setBranches] = useState([]);
+
+  const handleStateChange = (stateCode) => {
+    // Fetch cities for the selected state
+    fetchCities(stateCode).then(setCities);
+  };
+
+  const handleCityChange = (city) => {
+    // Fetch branches for the selected city
+    fetchBranches({ city }).then(setBranches);
+  };
+
+  return (
+    <BranchSelectorBase
+      value={branch}
+      onChange={setBranch}
+      branches={branches}
+      states={MY_STATES}
+      cities={cities}
+      onStateChange={handleStateChange}
+      onCityChange={handleCityChange}
+    />
+  );
+}
+```
+
+<BranchSelectorBaseWithCustomData />
+
+## Tree-shaking
+
+The component is designed for tree-shaking. Import only what you need:
+
+```jsx
+// Smart component (includes location data)
+import { BranchSelector } from '@api-banking/stitch.branch-selector';
+
+// Presentational only (smaller bundle, no location data)
+import { BranchSelectorBase } from '@api-banking/stitch.branch-selector';
+
+// Just the location data utilities
+import { STATES, CITIES, getCitiesForState } from '@api-banking/stitch.branch-selector';
+
+// Data fetching hooks
+import { useBranches, BranchesProvider } from '@api-banking/stitch.branch-selector';
+```
+
+## Branch Details Card
+
+When a branch is selected, the component displays a details card showing:
+- Full branch address
+- IFSC code (highlighted)
+
+This helps users confirm they've selected the correct branch before confirming.

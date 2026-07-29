@@ -1,0 +1,35 @@
+---
+description: A visually compelling and highly interactive Call-to-Action (CTA) button component for a modern web application.
+labels: ['button', 'ui', 'actions']
+---
+
+A versatile and accessible button component that prioritizes user experience and visual consistency. It extends the base Button component to provide a distinct primary appearance with a vibrant red color, while seamlessly integrating the standard secondary and tertiary styles.
+
+## Component usage
+
+Use the component to highlight an important action.
+
+```js
+<CtaButton appearance="primary" onClick={() => alert('Continue Clicked')}>
+  Continue
+</CtaButton>
+```
+## Button Appearances
+The CTA button supports different appearances to suit various contexts. The primary appearance is designed to grab attention, while secondary and tertiary appearances provide more subtle options.
+```js
+<CtaButton appearance="primary" onClick={() => alert('Submit Clicked')}>
+  Submit
+</CtaButton>
+<CtaButton appearance="secondary" onClick={() => alert('Accept Clicked')}>
+  Accept
+</CtaButton>
+<CtaButton appearance="tertiary" onClick={() => alert('Cancel Clicked')}>
+  Cancel
+</CtaButton>
+```
+## Button as Link
+When the `href` prop is provided, the CTA button renders as a link, enabling navigation to other pages or resources. The `external` prop can be used to open the link in a new tab.
+```js
+<CtaButton href="/terms" external>
+  Read Terms
+</CtaButton>

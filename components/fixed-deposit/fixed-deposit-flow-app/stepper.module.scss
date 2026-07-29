@@ -1,0 +1,175 @@
+$tablet: 480px;
+$laptop: 1024px;
+
+.stepperContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: var(--spacing-large) var(--spacing-large) var(--spacing-x4);
+  min-height: calc(100vh - 60px);
+}
+
+.stepperNav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: var(--spacing-large);
+}
+
+.stepTabs {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.stepTab {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 8px 16px;
+  font-size: var(--typography-sizes-caption-default);
+  font-weight: var(--typography-font-weight-medium);
+  font-family: var(--typography-font-family);
+  border: 1.5px solid var(--borders-default-color);
+  cursor: default;
+  position: relative;
+  min-width: 0;
+  background-color: var(--colors-surface-primary);
+  color: var(--colors-text-secondary);
+  border-radius: var(--borders-radius-medium);
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.stepNumber {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.65rem;
+  font-weight: 600;
+  flex-shrink: 0;
+  background-color: var(--colors-surface-secondary);
+  color: var(--colors-text-secondary);
+}
+
+.stepTabCompleted {
+  background-color: var(--colors-secondary-default);
+  border-color: var(--colors-secondary-default);
+  color: var(--colors-text-inverse);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--colors-secondary-hover);
+    border-color: var(--colors-secondary-hover);
+  }
+
+  .stepNumber {
+    background-color: rgba(255, 255, 255, 0.25);
+    color: var(--colors-text-inverse);
+  }
+}
+
+.stepTabCurrent {
+  background-color: var(--colors-surface-dark-default);
+  border-color: var(--colors-surface-dark-default);
+  color: var(--colors-text-inverse);
+
+  .stepNumber {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: var(--colors-text-inverse);
+  }
+}
+
+.stepTabPending {
+  background-color: var(--colors-surface-primary);
+  color: var(--colors-text-secondary);
+  border-style: dashed;
+
+  .stepNumber {
+    background-color: var(--colors-surface-secondary);
+    color: var(--colors-text-secondary);
+  }
+}
+
+.stepConnector {
+  width: 20px;
+  height: 2px;
+  flex-shrink: 0;
+
+  &.completed {
+    background-color: var(--colors-secondary-default);
+  }
+
+  &.dashed {
+    background: repeating-linear-gradient(
+      to right,
+      var(--borders-default-color),
+      var(--borders-default-color) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  }
+}
+
+.contentWrapper {
+  background-color: var(--colors-surface-dark-default);
+  border-radius: var(--borders-radius-large);
+  padding: var(--spacing-medium);
+}
+
+.contentHeader {
+  display: none;
+}
+
+.contentCard {
+  background-color: var(--colors-surface-primary);
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-medium);
+  overflow: hidden;
+}
+
+.contentInner {
+  padding: 0;
+}
+
+@media screen and (max-width: $laptop) {
+  .stepperContainer {
+    padding: var(--spacing-medium);
+  }
+
+  .stepTabs {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: var(--spacing-small);
+  }
+
+  .stepTab {
+    padding: 6px 12px;
+  }
+
+  .stepConnector {
+    display: none;
+  }
+}
+
+@media screen and (max-width: $tablet) {
+  .stepTabs {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .stepTab {
+    width: 100%;
+  }
+
+  .contentWrapper {
+    padding: var(--spacing-small);
+    border-radius: var(--borders-radius-medium);
+  }
+}

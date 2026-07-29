@@ -1,0 +1,50 @@
+.logoContainer {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+  text-decoration: none;
+  cursor: var(--interactions-cursor-pointer);
+  transition: opacity var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-in-out);
+
+  &:hover {
+    opacity: var(--effects-opacity-faint);
+  }
+}
+
+.iconWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  svg,
+  img {
+    height: 100%;
+    width: auto;
+    object-fit: contain;
+  }
+}
+
+.textWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.name {
+  font-family: var(--typography-font-family);
+  font-weight: var(--typography-font-weight-semi-bold);
+  font-size: var(--typography-sizes-heading-h5);
+  line-height: var(--typography-line-height-heading);
+  color: var(--colors-text-primary);
+  letter-spacing: var(--typography-letter-spacing-normal);
+  white-space: nowrap;
+}
+
+.slogan {
+  font-family: var(--typography-font-family);
+  font-weight: var(--typography-font-weight-regular);
+  font-size: var(--typography-sizes-body-small);
+  color: var(--colors-text-secondary);
+  letter-spacing: var(--typography-letter-spacing-wide);
+  white-space: nowrap;
+}

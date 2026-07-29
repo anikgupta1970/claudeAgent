@@ -1,0 +1,54 @@
+---
+description: Stitch API client with mock mode and React context support.
+---
+
+## Overview
+
+API client for Stitch banking APIs. Supports 4 separate base URLs (customer, capture, config, branch-config), mock mode for previews, and a React context provider.
+
+## Factory usage
+
+```ts
+import { createStitchClient } from '@api-banking/stitch.stitch-client';
+
+const client = createStitchClient({
+  customerBaseUrl: 'https://stitch-customer.example.com',
+  captureBaseUrl: 'https://stitch-capture.example.com',
+  configBaseUrl: 'https://stitch-config.example.com',
+  branchConfigBaseUrl: 'https://stitch-branch.example.com',
+  clientId: 'my-client-id',
+  token: 'bearer-token',
+});
+
+const customer = await client.findCustomer({ mobile: '919876543210', dob: '1995-01-01' });
+```
+
+## React context usage
+
+```tsx
+import { StitchClientProvider, useStitchClient } from '@api-banking/stitch.stitch-client';
+
+function App() {
+  return (
+    <StitchClientProvider config={{ mock: true }}>
+      <MyComponent />
+    </StitchClientProvider>
+  );
+}
+
+function MyComponent() {
+  const client = useStitchClient();
+  // use client methods...
+}
+```
+
+## Mock mode
+
+Pass `mock: true` to the config or use the pre-built `mockStitchClient` singleton. Mock mode is auto-enabled on Bit Cloud preview environments.
+
+```ts
+import { mockStitchClient } from '@api-banking/stitch.stitch-client';
+
+const result = await mockStitchClient.findCustomer({ mobile: '919876543210', dob: '1995-01-01' });
+// Returns mock data with simulated network delay
+```

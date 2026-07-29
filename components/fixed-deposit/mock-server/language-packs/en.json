@@ -1,0 +1,439 @@
+{
+  "step1": {
+    "title": "Open Fixed Deposit",
+    "customerDetails": "Customer Details",
+    "mobileNumber": "Mobile Number",
+    "mobileNumberPlaceholder": "Enter mobile number",
+    "dateOfBirthPlaceholder": "Enter Date of Birth",
+    "dateOfBirth": "Date of Birth",
+    "pan": "Pan Number",
+    "panPlaceholder": "e.g. ABCDE1234F",
+    "panHelpText": "Enter your 10-character PAN number.",
+    "verifyUsing": "Verify using",
+    "debitCardNumber": "Debit Card Number",
+    "debitCardPlaceholder": "1234 5678 9012 3456",
+    "debitCardHelpText": "Enter your 16-digit debit card number.",
+    "ucic": "UCIC",
+    "ucicPlaceholder": "e.g. 1234567890",
+    "ucicHelpText": "Enter your UCIC",
+    "password": "Password",
+    "passwordPlaceholder": "Enter password",
+    "passwordHelpText": "Enter your password",
+    "mobileHelpText": "For testing purposes Mobile Number: 9876543210",
+    "dobHelpText": "For testing purposes DOB: 01/01/1990 (MM/DD/YYYY)",
+    "dobPlaceholder": "MM/DD/YYYY",
+    "loading": "Loading...",
+    "termsText": "For full details read our",
+    "termsLink": "Terms and Conditions",
+    "privacyLink": "Privacy Policy",
+    "continue": "Continue",
+    "processing": "Processing...",
+    "errors": {
+      "mobileRequired": "Mobile number is required",
+      "mobileDigits": "Mobile number must be 10 digits",
+      "dobRequired": "Date of birth is required",
+      "consentRequired": "Required consent must be accepted",
+      "validMobileRequired": "Valid mobile number required",
+      "panRequired": "PAN required",
+      "debitCardRequired": "Debit card number required",
+      "ucicRequired": "UCIC required",
+      "passwordRequired": "Password required"
+    }
+  },
+  "step2": {
+    "depositDetails": "Deposit Details",
+    "clickHere": "Click here",
+    "interestRates": "To view interest rates and more ",
+    "customerDetails": "Customer Details",
+    "fullName": "Full Name",
+    "dateOfBirth": "Date of Birth",
+    "pan": "PAN",
+    "selectFDType": "Select FD Type",
+    "withdrawableFD": "Withdrawable FD",
+    "nonWithdrawableFD": "Non-Withdrawable FD",
+    "withdrawableDesc": "Allow partial/premature withdrawal",
+    "nonWithdrawableDesc": "Higher interest, no premature withdrawal",
+    "fdAmount": "FD Amount (₹)",
+    "enterFDAmount": "Enter FD amount",
+    "interestPayout": "Interest Payout",
+    "interestPayoutMonthly": "Monthly",
+    "interestPayoutQuarterly": "Quarterly",
+    "interestPayoutAtMaturity": "At Maturity",
+    "interestPayoutMonthlyDesc": "Interest paid every month",
+    "interestPayoutQuarterlyDesc": "Interest for every fixed 3 months",
+    "interestPayoutAtMaturityDesc": "short term FD 7 to 180 days",
+    "maturityInstructions": "Maturity Instructions",
+    "maturityInfoMessage": "The amount will be transferred to the source account on maturity.",
+    "tenure": "Tenure",
+    "years": "Years",
+    "months": "Months",
+    "days": "Days",
+    "atMaturityNote": "Note: For \"On Maturity\" payout option, tenure must be between 7 and 180 days.",
+    "calculateFD": "Calculate FD Details",
+    "calculating": "Calculating...",
+    "calculateInfo": "Click to calculate maturity amount and interest details",
+    "maturityDetails": "Maturity Details",
+    "rateOfInterest": "Rate of Interest",
+    "maturityAmount": "Maturity Amount",
+    "maturityDate": "Maturity Date",
+    "interestEarned": "Interest Earned",
+    "continue": "Continue",
+    "errors": {
+      "productVariant": "Please select a product variant",
+      "productDetails": "Product details are not available. Please try again or select another product.",
+      "eligibility": "This product is available for customers between {minAge} and {maxAge} years of age.",
+      "amount": "Please enter FD amount",
+      "invalidAmount": "Please enter a valid FD amount",
+      "minAmount": "Minimum deposit amount is ₹{amount}",
+      "maxAmount": "Maximum deposit amount is ₹{amount}",
+      "amountRange": "Enter deposit amount within range min: ₹{minAmount} & max: ₹{maxAmount}",
+      "interestPayout": "Please select an interest payout option",
+      "invalidInterestPayout": "Selected interest payout option is not available for this product",
+      "interestPayoutMaturity": "On Maturity option is only available for FDs with tenure between 7 and 180 days",
+      "monthlyQuarterlyTenure": "Monthly/Quarterly payout requires tenure greater than 180 days or 6 months",
+      "maturityInstructions": "Please select a maturity instruction",
+      "invalidMaturityInstructions": "Selected maturity instruction is not available for this product",
+      "tenure": "Minimum tenure should be {tenure}",
+      "maxTenure": "Maximum tenure should be {tenure}"
+    }
+  },
+  "step3": {
+    "bankDetails": "Bank Details",
+    "fdFundingAmount": "FD Funding Amount",
+    "fundYourFdVia": "Fund your FD via",
+    "otherBank": "Other Bank",
+    "hdfcBank": "HDFC Bank",
+    "combinedFunds": "Combined Funds",
+    "addAccount": "Add Account",
+    "otherBankAccount": "Other Bank Account",
+    "accountNumber": "Account Number",
+    "ifsc": "IFSC",
+    "bank": "Bank",
+    "maturityAccount": "Maturity Account",
+    "maturityAccountDesc": "Maturity amount will be deposited into this HDFC Bank account. FD will be booked as per the same relationship.",
+    "accountType": "Account Type",
+    "availableBalance": "Available balance",
+    "branch": "Branch",
+    "selectBranch": "Select a branch",
+    "fdBookedBranch": "FD will be booked at this branch",
+    "nominee": "Nominee",
+    "addNomineeLabel": "Add Nominee to FD (strongly recommended)",
+    "fullName": "Full Name",
+    "relationship": "Relationship",
+    "dateOfBirth": "Date of Birth",
+    "guardianDetails": "Guardian Details",
+    "guardiansAddress": "Guardians Address",
+    "accountDetails": "Account Details",
+    "amountFromHdfc": "Amount from HDFC",
+    "amountFromOtherBank": "Amount from Other Bank",
+    "continue": "Continue",
+    "loading": {
+      "loadingAccountDetails": "Loading account details...",
+      "loadingProductOptions": "Loading product options..."
+    }
+  },
+  "step4": {
+    "bankDetails": "Bank Details",
+    "fixedDepositAccount": "Fixed Deposit Account",
+    "customerDetails": "Customer Details",
+    "fullName": "Full Name",
+    "dateOfBirth": "Date of Birth",
+    "pan": "PAN",
+    "mobileNumber": "Mobile Number",
+    "fixedDepositDetails": "Fixed Deposit Details",
+    "fixedDepositAmount": "Fixed Deposit Amount",
+    "tenure": "Tenure",
+    "interestPayout": "Interest Payout",
+    "maturityInstructions": "Maturity Instructions",
+    "rateOfInterest": "Rate of Interest",
+    "rateOfInterestSuffix": "p.a",
+    "maturityAmount": "Maturity Amount",
+    "maturityDate": "Maturity Date",
+    "branch": "Branch",
+    "bankAccountDetails": "Bank Account Details",
+    "accountNumber": "Account Number",
+    "bankName": "Bank Name",
+    "ifscCode": "IFSC Code",
+    "nomineeDetails": "Nominee Details",
+    "relationship": "Relationship",
+    "guardianDetails": "Guardian Details",
+    "guardianName": "Guardian Name",
+    "guardianDateOfBirth": "Guardian Date of Birth",
+    "confirm": "Confirm",
+    "interestPayoutOptions": {
+      "reinvest": "Reinvest",
+      "quarterly": "Quarterly Interest Payout",
+      "monthly": "Monthly Interest Payout",
+      "onMaturity": "On Maturity"
+    },
+    "tenureFormat": {
+      "year": "Year",
+      "years": "Years",
+      "month": "month",
+      "months": "months",
+      "day": "day",
+      "days": "days"
+    }
+  },
+  "step5": {
+    "fundYourFD": "Fund Your FD",
+    "choosePaymentMethod": "Choose a payment method to fund your Fixed Deposit of",
+    "paymentMethods": {
+      "netbanking": "NetBanking",
+      "upi": "UPI"
+    },
+    "upi": {
+      "enterUpiId": "Enter your UPI ID",
+      "upiIdPlaceholder": "yourname@upi",
+      "verify": "Verify",
+      "verifying": "Verifying...",
+      "verified": "Verified",
+      "verifiedSuccess": "UPI ID verified successfully"
+    },
+    "buttons": {
+      "back": "Back",
+      "payNow": "Pay Now",
+      "processing": "Processing..."
+    },
+    "errors": {
+      "enterUpiId": "Please enter a UPI ID",
+      "invalidUpiFormat": "Invalid UPI ID format",
+      "nameMismatch": "Name mismatch with UPI ID",
+      "unableToVerify": "Unable to verify UPI ID",
+      "verificationError": "Error during verification. Please try again",
+      "verifyBeforeProceeding": "Please verify your UPI ID before proceeding",
+      "submissionError": "Error submitting form. Please try again"
+    }
+  },
+  "upiPayment": {
+    "payingTo": "Paying to",
+    "upiId": "UPI ID",
+    "chooseOption": "For testing, choose a payment result:",
+    "success": "Success",
+    "failure": "Failure",
+    "back": "Back to Payment Methods"
+  },
+  "netbankingPayment": {
+    "chooseOption": "For testing, choose a payment result:",
+    "success": "Success",
+    "failure": "Failure",
+    "back": "Back to Payment Methods"
+  },
+  "paymentFailed": {
+    "title": "Payment Failed",
+    "referenceId": "Reference ID",
+    "contactSupport": "If the problem persists, please contact our support team."
+  },
+  "step6": {
+    "fixedDepositAccount": "Fixed Deposit Account",
+    "applicationSubmitted": "Application has been submitted",
+    "fdAccountOpened": "Account will be opened shortly",
+    "applicationSummary": "Application Summary",
+    "transactionRefNo": "Transaction Ref. No:",
+    "dateTime": "Date & Time",
+    "accountType": "Account Type",
+    "accountNumber": "Account Number",
+    "customerName": "Customer Name",
+    "mobileNumber": "Mobile Number",
+    "fixedDepositAmount": "Fixed Deposit Amount",
+    "tenure": "Tenure",
+    "maturityDate": "Maturity Date",
+    "interestRate": "Interest Rate",
+    "maturityAmount": "Maturity Amount",
+    "branch": "Branch",
+    "nomineeDetails": "Nominee Details",
+    "nomineeName": "Nominee Name",
+    "relationship": "Relationship",
+    "backToHome": "Back to Home",
+    "tenureFormat": {
+      "year": "Year",
+      "years": "Years",
+      "month": "Month",
+      "months": "Months",
+      "day": "Day",
+      "days": "Days"
+    }
+  },
+  "accountDetails": {
+    "title": "Other Bank Account",
+    "accountNumber": "Account Number",
+    "accountNumberPlaceholder": "Enter account number",
+    "confirmAccountNumber": "Confirm Account Number",
+    "confirmAccountNumberPlaceholder": "Re-enter account number",
+    "ifsc": "IFSC",
+    "ifscPlaceholder": "Enter IFSC code",
+    "clickToSearch": "Click here to search for IFSC code",
+    "verifyingIFSC": "Verifying IFSC...",
+    "accountVerified": "Account verified successfully",
+    "confirm": "Confirm",
+    "searchIFSC": {
+      "title": "Search IFSC Code",
+      "bank": "Bank",
+      "selectBank": "Select Bank",
+      "branch": "Branch",
+      "selectBranch": "Select Branch",
+      "branchDetails": "Branch Address & IFSC Code",
+      "ifscCodeLabel": "IFSC Code - "
+    },
+    "errors": {
+      "accountRequired": "Account number is required",
+      "accountMinLength": "Account number must be at least 8 digits",
+      "accountNotValidated": "Account number not validated",
+      "confirmRequired": "Please confirm account number",
+      "confirmMismatch": "Account numbers do not match",
+      "ifscRequired": "IFSC is required",
+      "invalidIfsc": "Invalid IFSC code",
+      "failedValidation": "Failed to validate IFSC code",
+      "nameMismatch": "Account holder name does not match with our records",
+      "unableToVerify": "Unable to verify account. Please check details and try again",
+      "verificationError": "An error occurred during verification. Please try again later"
+    }
+  },
+  "branchSearch": {
+    "title": "Search Branch",
+    "searchModes": {
+      "location": "Location",
+      "pincode": "PinCode"
+    },
+    "location": {
+      "state": "State",
+      "city": "City",
+      "branch": "Branch",
+      "selectPlaceholder": "Select",
+      "loadingStates": "Loading states...",
+      "loadingCities": "Loading cities...",
+      "loadingBranches": "Loading branches...",
+      "noOptions": "No options"
+    },
+    "pincode": {
+      "pincode": "Pin-code",
+      "pincodePlaceholder": "Enter 6-digit pincode",
+      "branch": "Branch",
+      "noOptions": "No options"
+    },
+    "branchDetails": "Branch Address & IFSC Code",
+    "ifscCodeLabel": "IFSC Code - ",
+    "confirm": "Confirm",
+    "errors": {
+      "failedLoadStates": "Failed to load states. Please try again.",
+      "noCitiesAvailable": "No cities available in this state",
+      "failedLoadCities": "Failed to load cities. Please try again.",
+      "noBranchesAvailable": "No branches available in this location",
+      "failedLoadBranches": "Failed to load branches. Please try again.",
+      "noBranchesForPincode": "No branches found for this pincode",
+      "failedFindBranch": "Failed to find branch. Please try another pincode"
+    }
+  },
+  "branchSelector": {
+    "title": "Search Branch",
+    "searchTypes": {
+      "text": "Search by Text",
+      "pincode": "Search by Pincode"
+    },
+    "textSearch": {
+      "label": "Search branch",
+      "placeholder": "Search by branch name, city, state, or district"
+    },
+    "pincodeSearch": {
+      "label": "Enter pincode",
+      "placeholder": "Enter 6-digit pincode"
+    },
+    "loading": "Loading...",
+    "noBranchesFound": "No branches found. Try a different search.",
+    "branchDetails": {
+      "ifscLabel": "IFSC:"
+    },
+    "buttons": {
+      "cancel": "Cancel"
+    }
+  },
+  "ifscSelector": {
+    "title": "Search Branch by IFSC",
+    "ifscCode": {
+      "label": "IFSC Code",
+      "placeholder": "Enter 11-digit IFSC code",
+      "search": "Search"
+    },
+    "bankName": {
+      "label": "Bank Name",
+      "placeholder": "Bank name will appear here",
+      "selectFromList": "Select from list"
+    },
+    "branchDetails": {
+      "title": "Branch Details",
+      "bankName": "Bank Name",
+      "branch": "Branch",
+      "address": "Address",
+      "city": "City",
+      "state": "State",
+      "ifscCode": "IFSC Code"
+    },
+    "buttons": {
+      "cancel": "Cancel",
+      "confirm": "Confirm"
+    },
+    "errors": {
+      "lengthError": "IFSC code must be 11 characters",
+      "formatError": "Invalid IFSC code format",
+      "bankNotFound": "Bank not found for this IFSC code"
+    }
+  },
+  "nominee": {
+    "fullName": "Full Name",
+    "relationship": "Relationship",
+    "dateOfBirth": "Date of Birth",
+    "nomineeName": "Nominee Name",
+    "guardianDetails": "Guardian Details",
+    "guardianNote": "Since the nominee is a minor, please provide guardian details.",
+    "addNominee": "Add Nominee",
+    "selectRelationship": "Select Relationship",
+    "confirm": "Confirm",
+    "edit": "Edit",
+    "delete": "Delete",
+    "errors": {
+      "nomineeNameRequired": "Nominee name is required",
+      "nomineeNameSpecialChar": "Nominee name should not contain special characters",
+      "relationshipRequired": "Please select a relationship",
+      "dobRequired": "Date of birth is required",
+      "guardianNameRequired": "Guardian name is required for minor nominees",
+      "guardianDobRequired": "Guardian date of birth is required"
+    }
+  },
+  "otp": {
+    "title": "Enter OTP",
+    "close": "Close",
+    "instruction": "Please enter the OTP sent to your mobile number {{mobile}}",
+    "instructionMasked": "Please enter the OTP sent to your mobile number {{mobile}}",
+    "digitLabel": "OTP digit {{number}}",
+    "submit": "Submit",
+    "verifying": "Verifying...",
+    "resendOtp": "Resend OTP",
+    "resendOtpTimer": "Resend OTP in {{seconds}}s",
+    "sentToPhone": "OTP has been sent to {{phoneNumber}}",
+    "sentToDevice": "OTP has been sent to your registered device",
+    "testingHint": "For testing purposes, please use OTP: {{otp}}",
+    "errors": {
+      "invalidOtp": "Invalid OTP. Please try again.",
+      "verificationFailed": "An error occurred during verification. Please try again.",
+      "resendFailed": "Failed to resend OTP. Please try again."
+    }
+  },
+  "common": {
+    "accept": "Accept",
+    "displayingFallback": "Displaying fallback content:",
+    "viewDocument": "View document",
+    "termsLoadFailed": "Unable to load terms. Please try again later.",
+    "consentDetails": "Consent Details",
+    "summary": "Summary",
+    "details": "Details",
+    "loadingConsents": "Loading consent information...",
+    "viewFullTerms": "View Full Terms",
+    "and": "and",
+    "refreshPage": "Refresh Page",
+    "close": "Close",
+    "save": "Save",
+    "cancel": "Cancel",
+    "continue": "Continue",
+    "networkError": "Network error. Please try again."
+  }
+}

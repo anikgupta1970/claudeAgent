@@ -1,0 +1,35 @@
+---
+description: A flexible component to group a label, an input, and helper or error text.
+labels: ['input', 'form', 'group']
+---
+
+A flexible input group component that combines a label, an input element, and optional helper/error text. It provides consistent spacing and styling for form elements.
+
+## Basic Usage
+
+This example demonstrates the basic usage of the `InputGroup` component with a label and an input field.
+
+```js
+<InputGroup label="Name" inputId="name">
+  <input type="text" id="name" />
+</InputGroup>
+```
+
+## With Help Text
+
+This example shows how to add helper text below the input field to provide additional context or instructions.
+
+```js
+<InputGroup label="Email" inputId="email" helpText="Enter a valid email address.">
+  <input type="email" id="email" />
+</InputGroup>
+```
+
+## With Error Text
+
+This example demonstrates how to display an error message when the input is invalid. The error text replaces the help text.
+
+```js
+<InputGroup label="Password" inputId="password" errorText="Password must be at least 8 characters.">
+  <input type="password" id="password" />
+</InputGroup>

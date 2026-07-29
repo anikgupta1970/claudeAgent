@@ -1,0 +1,431 @@
+export default {
+  step1: {
+    title: "मुदत ठेव खाते",
+    customerDetails: "ग्राहक तपशील",
+    mobileNumber: "मोबाइल क्रमांक",
+    mobileNumberPlaceholder: "मोबाइल क्रमांक प्रविष्ट करा",
+    dateOfBirth: "जन्म तारीख",
+    verifyUsing: "सत्यापनाचा प्रकार",
+    termsText: "संपूर्ण तपशीलासाठी आमचे वाचा",
+    termsLink: "अटी व शर्ती",
+    privacyLink: "गोपनीयता धोरण",
+    continue: "पुढे चालू ठेवा",
+    processing: "प्रोसेसिंग...",
+    errors: {
+      mobileRequired: "मोबाईल नंबर आवश्यक आहे",
+      mobileDigits: "मोबाईल नंबर 10 अंकी असावा",
+      dobRequired: "जन्मतारीख आवश्यक आहे",
+      consentRequired: "आवश्यक सहमती स्वीकारली पाहिजे"
+    }
+  },
+  step2: {
+    depositDetails: "ठेव तपशील",
+    clickHere: "येथे क्लिक करा",
+    interestRates: "व्याजदर आणि अधिक माहितीसाठी",
+    customerDetails: "ग्राहक तपशील",
+    fullName: "पूर्ण नाव",
+    dateOfBirth: "जन्म तारीख",
+    pan: "पॅन",
+    selectFDType: "FD प्रकार निवडा",
+    withdrawableFD: "काढण्यायोग्य FD",
+    nonWithdrawableFD: "काढण्या अयोग्य FD",
+    withdrawableDesc: "आंशिक/मुदतपूर्व काढण्याची परवानगी आहे",
+    nonWithdrawableDesc: "उच्च व्याज, मुदतपूर्व काढणे नाही",
+    fdAmount: "FD रक्कम (₹)",
+    enterFDAmount: "FD रक्कम प्रविष्ट करा",
+    interestPayout: "व्याज देय",
+    interestPayoutMonthly: "मासिक",
+    interestPayoutQuarterly: "त्रैमासिक",
+    interestPayoutAtMaturity: "मुदतीनंतर",
+    interestPayoutMonthlyDesc: "दर महिन्याला व्याज दिले जाते",
+    interestPayoutQuarterlyDesc: "प्रत्येक फिक्स्ड 3 महिन्यांसाठी व्याज",
+    interestPayoutAtMaturityDesc: "अल्पकालीन FD 7 ते 180 दिवस",
+    maturityInstructions: "मुदत पूर्ण झाल्यानंतरच्या सूचना",
+    maturityInfoMessage: "रक्कम मुदत पूर्ण झाल्यावर मूळ खात्यात वळवली जाईल",
+    tenure: "कालावधी",
+    years: "वर्षे",
+    months: "महिने",
+    days: "दिवस",
+    atMaturityNote: "नोंद: \"मुदतीनंतर\" देय पर्यायासाठी, कालावधी 7 ते 180 दिवसांमध्ये असावा.",
+    calculateFD: "FD तपशील गणना करा",
+    calculating: "गणना चालू आहे...",
+    calculateInfo: "मुदत पूर्ण झाल्यावरची रक्कम आणि व्याज तपशील गणना करण्यासाठी क्लिक करा",
+    maturityDetails: "मुदतीचे तपशील",
+    rateOfInterest: "व्याजदर",
+    maturityAmount: "मुदतीची रक्कम",
+    maturityDate: "मुदत समाप्ती तारीख",
+    interestEarned: "मिळालेले व्याज",
+    continue: "पुढे चालू ठेवा",
+    errors: {
+      productVariant: "कृपया प्रोडक्ट प्रकार निवडा",
+      productDetails: "प्रोडक्ट तपशील उपलब्ध नाहीत. कृपया पुन्हा प्रयत्न करा किंवा दुसरा प्रोडक्ट निवडा.",
+      eligibility: "हा प्रोडक्ट {minAge} आणि {maxAge} वर्षे वयाच्या ग्राहकांसाठी उपलब्ध आहे.",
+      amount: "कृपया FD रक्कम प्रविष्ट करा",
+      invalidAmount: "कृपया वैध FD रक्कम प्रविष्ट करा",
+      minAmount: "किमान जमा रक्कम ₹{amount} आहे",
+      maxAmount: "जास्तीत जास्त जमा रक्कम ₹{amount} आहे",
+      amountRange: "किमान: ₹{minAmount} आणि कमाल: ₹{maxAmount} दरम्यान जमा रक्कम प्रविष्ट करा",
+      interestPayout: "कृपया व्याज देय पर्याय निवडा",
+      invalidInterestPayout: "निवडलेला व्याज देय पर्याय या प्रोडक्टसाठी उपलब्ध नाही",
+      interestPayoutMaturity: "मुदतीनंतर पर्याय फक्त 7 ते 180 दिवसांच्या कालावधीसाठी FD साठी उपलब्ध आहे",
+      monthlyQuarterlyTenure: "मासिक/त्रैमासिक देयकासाठी 180 दिवस किंवा 6 महिन्यांपेक्षा जास्त कालावधी आवश्यक आहे",
+      maturityInstructions: "कृपया मुदत पूर्ण झाल्यानंतरच्या सूचना निवडा",
+      invalidMaturityInstructions: "निवडलेल्या मुदत पूर्ण झाल्यानंतरच्या सूचना या प्रोडक्टसाठी उपलब्ध नाहीत",
+      tenure: "किमान कालावधी {tenure} असावा",
+      maxTenure: "जास्तीत जास्त कालावधी {tenure} असावा"
+    }
+  },
+  step3: {
+    bankDetails: "बँक तपशील",
+    fdFundingAmount: "FD निधी रक्कम",
+    fundYourFdVia: "आपल्या FD साठी निधी भरा याच्या माध्यमातून",
+    otherBank: "इतर बँक",
+    hdfcBank: "HDFC बँक",
+    combinedFunds: "संयुक्त निधी",
+    addAccount: "खाते जोडा",
+    otherBankAccount: "इतर बँक खाते",
+    accountNumber: "खाते क्रमांक",
+    ifsc: "IFSC",
+    bank: "बँक",
+    maturityAccount: "मुदतीचे खाते",
+    maturityAccountDesc: "मुदतीची रक्कम या HDFC बँक खात्यात जमा केली जाईल. FD त्याच संबंधावर आधारित असेल.",
+    accountType: "खाते प्रकार",
+    availableBalance: "उपलब्ध शिल्लक",
+    branch: "शाखा",
+    selectBranch: "शाखा निवडा",
+    fdBookedBranch: "FD या शाखेत बुक केली जाईल",
+    nominee: "नामनिर्देशित",
+    addNomineeLabel: "FD साठी नामनिर्देशित व्यक्ती जोडा (शिफारस केली जाते)",
+    fullName: "पूर्ण नाव",
+    relationship: "नाते",
+    dateOfBirth: "जन्म तारीख",
+    guardianDetails: "पालकांचे तपशील",
+    guardiansAddress: "पालकांचा पत्ता",
+    accountDetails: "खाते तपशील",
+    amountFromHdfc: "HDFC मधून रक्कम",
+    amountFromOtherBank: "इतर बँकेतून रक्कम",
+    continue: "पुढे चालू ठेवा",
+    loading: {
+      loadingAccountDetails: "खाते तपशील लोड होत आहेत...",
+      loadingProductOptions: "प्रोडक्ट पर्याय लोड होत आहेत..."
+    }
+  },
+  step4: {
+    bankDetails: "बँक तपशील",
+    fixedDepositAccount: "मुदत ठेव खाते",
+    customerDetails: "ग्राहक तपशील",
+    fullName: "पूर्ण नाव",
+    dateOfBirth: "जन्म तारीख",
+    pan: "पॅन",
+    mobileNumber: "मोबाइल क्रमांक",
+    fixedDepositDetails: "मुदत ठेव तपशील",
+    fixedDepositAmount: "मुदत ठेव रक्कम",
+    tenure: "कालावधी",
+    interestPayout: "व्याज देय",
+    maturityInstructions: "मुदत पूर्ण झाल्यानंतरच्या सूचना",
+    rateOfInterest: "व्याज दर",
+    rateOfInterestSuffix: "वार्षिक",
+    maturityAmount: "मुदतीची रक्कम",
+    maturityDate: "मुदत समाप्ती तारीख",
+    branch: "शाखा",
+    bankAccountDetails: "बँक खात्याचे तपशील",
+    accountNumber: "खाते क्रमांक",
+    bankName: "बँकेचे नाव",
+    ifscCode: "IFSC कोड",
+    nomineeDetails: "नामनिर्देशित तपशील",
+    relationship: "नाते",
+    guardianDetails: "पालकांचे तपशील",
+    guardianName: "पालकाचे नाव",
+    guardianDateOfBirth: "पालकाची जन्म तारीख",
+    confirm: "पुष्टी करा",
+    interestPayoutOptions: {
+      reinvest: "पुन्हा गुंतवणूक",
+      quarterly: "त्रैमासिक व्याज देय",
+      monthly: "मासिक व्याज देय",
+      onMaturity: "मुदतीनंतर"
+    },
+    tenureFormat: {
+      year: "वर्ष",
+      years: "वर्षे",
+      month: "महिना",
+      months: "महिने",
+      day: "दिवस",
+      days: "दिवस"
+    }
+  },
+  step5: {
+    paymentMethods: {
+      netbanking: "नेटबँकिंग",
+      upi: "युपीआय"
+    },
+    upi: {
+      enterUpiId: "तुमचा युपीआय आयडी प्रविष्ट करा",
+      upiIdPlaceholder: "तुमचेनाव@upi",
+      verify: "सत्यापित करा",
+      verifying: "सत्यापित करत आहे...",
+      verified: "सत्यापित",
+      verifiedSuccess: "युपीआय आयडी यशस्वीरित्या सत्यापित केला"
+    },
+    buttons: {
+      back: "मागे",
+      payNow: "आता पैसे द्या",
+      processing: "प्रक्रिया करत आहे..."
+    },
+    errors: {
+      enterUpiId: "कृपया युपीआय आयडी प्रविष्ट करा",
+      invalidUpiFormat: "अवैध युपीआय आयडी स्वरूप",
+      nameMismatch: "युपीआय आयडीसह नाव जुळत नाही",
+      unableToVerify: "युपीआय आयडी सत्यापित करण्यात अक्षम",
+      verificationError: "सत्यापन दरम्यान त्रुटी. कृपया पुन्हा प्रयत्न करा",
+      verifyBeforeProceeding: "पुढे जाण्यापूर्वी कृपया तुमचा युपीआय आयडी सत्यापित करा",
+      submissionError: "फॉर्म सबमिट करताना त्रुटी. कृपया पुन्हा प्रयत्न करा"
+    }
+  },
+  upiPayment: {
+    payingTo: "यांना पैसे देत आहे",
+    upiId: "युपीआय आयडी",
+    chooseOption: "चाचणीसाठी, पेमेंट परिणाम निवडा:",
+    success: "यशस्वी",
+    failure: "अयशस्वी",
+    back: "पेमेंट पद्धतींकडे परत जा"
+  },
+  netbankingPayment: {
+    chooseOption: "चाचणीसाठी, पेमेंट परिणाम निवडा:",
+    success: "यशस्वी",
+    failure: "अयशस्वी",
+    back: "पेमेंट पद्धतींकडे परत जा"
+  },
+  paymentFailed: {
+    title: "पेमेंट अयशस्वी",
+    referenceId: "संदर्भ आयडी",
+    contactSupport: "समस्या कायम राहिल्यास, कृपया आमच्या सपोर्ट टीमशी संपर्क साधा."
+  },
+  step6: {
+    fixedDepositAccount: "मुदत ठेव खाते",
+    applicationSubmitted: "अर्ज सादर केला",
+    fdAccountOpened: "मुदत ठेव खाते उघडले गेले आहे.",
+    applicationSummary: "अर्ज सारांश",
+    transactionRefNo: "व्यवहार संदर्भ क्र.:",
+    dateTime: "तारीख आणि वेळ",
+    accountType: "खाते प्रकार",
+    accountNumber: "खाते क्रमांक",
+    customerName: "ग्राहकाचे नाव",
+    mobileNumber: "मोबाइल क्रमांक",
+    fixedDepositAmount: "मुदत ठेव रक्कम",
+    tenure: "कालावधी",
+    maturityDate: "मुदत समाप्ती तारीख",
+    interestRate: "व्याज दर",
+    maturityAmount: "मुदतीची रक्कम",
+    branch: "शाखा",
+    nomineeDetails: "नामनिर्देशित तपशील",
+    nomineeName: "नामनिर्देशित नाव",
+    relationship: "नाते",
+    backToHome: "होमवर परत जा",
+    tenureFormat: {
+      year: "वर्ष",
+      years: "वर्षे",
+      month: "महिना",
+      months: "महिने",
+      day: "दिवस",
+      days: "दिवस"
+    }
+  },
+  accountDetails: {
+    title: "इतर बँक खाते",
+    accountNumber: "खाते क्रमांक",
+    accountNumberPlaceholder: "खाते क्रमांक प्रविष्ट करा",
+    confirmAccountNumber: "खाते क्रमांकची पुष्टी करा",
+    confirmAccountNumberPlaceholder: "खाते क्रमांक पुन्हा प्रविष्ट करा",
+    ifsc: "IFSC",
+    ifscPlaceholder: "IFSC कोड प्रविष्ट करा",
+    clickToSearch: "IFSC कोड शोधण्यासाठी येथे क्लिक करा",
+    verifyingIFSC: "IFSC सत्यापित होत आहे...",
+    accountVerified: "खाते यशस्वीरित्या सत्यापित झाले",
+    confirm: "पुष्टी करा",
+    searchIFSC: {
+      title: "IFSC कोड शोधा",
+      bank: "बँक",
+      selectBank: "बँक निवडा",
+      branch: "शाखा",
+      selectBranch: "शाखा निवडा",
+      branchDetails: "शाखेचा पत्ता आणि IFSC कोड",
+      ifscCodeLabel: "IFSC कोड - "
+    },
+    errors: {
+      accountRequired: "खाते क्रमांक आवश्यक आहे",
+      accountMinLength: "खाते क्रमांक किमान 8 अंकी असावा",
+      accountNotValidated: "खाते क्रमांक सत्यापित केलेला नाही",
+      confirmRequired: "कृपया खाते क्रमांकची पुष्टी करा",
+      confirmMismatch: "खाते क्रमांक जुळत नाहीत",
+      ifscRequired: "IFSC आवश्यक आहे",
+      invalidIfsc: "अवैध IFSC कोड",
+      failedValidation: "IFSC कोड सत्यापित करण्यात अयशस्वी",
+      nameMismatch: "खातेधारकाचे नाव आमच्या रेकॉर्डशी जुळत नाही",
+      unableToVerify: "खाते सत्यापित करण्यात अक्षम. कृपया तपशील तपासा आणि पुन्हा प्रयत्न करा",
+      verificationError: "सत्यापन दरम्यान त्रुटी आली. कृपया नंतर पुन्हा प्रयत्न करा"
+    }
+  },
+  branchSearch: {
+    title: "शाखा शोधा",
+    searchModes: {
+      location: "स्थान",
+      pincode: "पिनकोड"
+    },
+    location: {
+      state: "राज्य",
+      city: "शहर",
+      branch: "शाखा",
+      selectPlaceholder: "निवडा",
+      loadingStates: "राज्ये लोड होत आहेत...",
+      loadingCities: "शहरे लोड होत आहेत...",
+      loadingBranches: "शाखा लोड होत आहेत...",
+      noOptions: "कोणतेही पर्याय नाहीत"
+    },
+    pincode: {
+      pincode: "पिन-कोड",
+      pincodePlaceholder: "6-अंकी पिनकोड प्रविष्ट करा",
+      branch: "शाखा",
+      noOptions: "कोणतेही पर्याय नाहीत"
+    },
+    branchDetails: "शाखेचा पत्ता आणि IFSC कोड",
+    ifscCodeLabel: "IFSC कोड - ",
+    confirm: "पुष्टी करा",
+    errors: {
+      failedLoadStates: "राज्ये लोड करण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.",
+      noCitiesAvailable: "या राज्यात कोणतीही शहरे उपलब्ध नाहीत",
+      failedLoadCities: "शहरे लोड करण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.",
+      noBranchesAvailable: "या स्थानावर कोणत्याही शाखा उपलब्ध नाहीत",
+      failedLoadBranches: "शाखा लोड करण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा.",
+      noBranchesForPincode: "या पिनकोडसाठी कोणत्याही शाखा आढळल्या नाहीत",
+      failedFindBranch: "शाखा शोधण्यात अयशस्वी. कृपया दुसरा पिनकोड वापरा"
+    }
+  },
+  branchSelector: {
+    title: "शाखा शोधा",
+    searchTypes: {
+      text: "मजकूराद्वारे शोधा",
+      pincode: "पिनकोडद्वारे शोधा"
+    },
+    textSearch: {
+      label: "शाखा शोधा",
+      placeholder: "शाखेचे नाव, शहर, राज्य, किंवा जिल्हा द्वारे शोधा"
+    },
+    pincodeSearch: {
+      label: "पिनकोड प्रविष्ट करा",
+      placeholder: "6-अंकी पिनकोड प्रविष्ट करा"
+    },
+    loading: "लोड होत आहे...",
+    noBranchesFound: "कोणत्याही शाखा आढळल्या नाहीत. वेगळी शोध प्रयत्न करा.",
+    branchDetails: {
+      ifscLabel: "IFSC:"
+    },
+    buttons: {
+      cancel: "रद्द करा"
+    }
+  },
+  ifscSelector: {
+    title: "IFSC द्वारे शाखा शोधा",
+    ifscCode: {
+      label: "IFSC कोड",
+      placeholder: "11-अंकी IFSC कोड प्रविष्ट करा",
+      search: "शोधा"
+    },
+    bankName: {
+      label: "बँकेचे नाव",
+      placeholder: "बँकेचे नाव येथे दिसेल",
+      selectFromList: "यादीतून निवडा"
+    },
+    branchDetails: {
+      title: "शाखा तपशील",
+      bankName: "बँकेचे नाव",
+      branch: "शाखा",
+      address: "पत्ता",
+      city: "शहर",
+      state: "राज्य",
+      ifscCode: "IFSC कोड"
+    },
+    buttons: {
+      cancel: "रद्द करा",
+      confirm: "पुष्टी करा"
+    },
+    errors: {
+      lengthError: "IFSC कोड 11 अक्षरी असणे आवश्यक आहे",
+      formatError: "अवैध IFSC कोड फॉरमॅट",
+      bankNotFound: "या IFSC कोडसाठी बँक आढळली नाही"
+    }
+  },
+  nominee: {
+    fullName: "पूर्ण नाव",
+    relationship: "नाते",
+    dateOfBirth: "जन्म तारीख",
+    nomineeName: "नामनिर्देशित नाव",
+    guardianDetails: "पालकांचे तपशील",
+    guardianNote: "पालक खाते उघडणाऱ्या ग्राहकापेक्षा वेगळा असावा",
+    addNominee: "नामनिर्देशित व्यक्ती जोडा",
+    selectRelationship: "नाते निवडा",
+    confirm: "पुष्टी करा",
+    edit: "संपादन करा",
+    delete: "हटवा",
+    errors: {
+      nomineeNameRequired: "नामनिर्देशित व्यक्तीचे नाव आवश्यक आहे",
+      nomineeNameSpecialChar: "नामनिर्देशित व्यक्तीच्या नावात विशेष वर्ण असू शकत नाहीत",
+      relationshipRequired: "नाते आवश्यक आहे",
+      dobRequired: "जन्म तारीख आवश्यक आहे",
+      guardianNameRequired: "पालकाचे नाव आवश्यक आहे",
+      guardianDobRequired: "पालकाची जन्म तारीख आवश्यक आहे"
+    },
+    relationships: {
+      FATHER: "वडील",
+      MOTHER: "आई",
+      SON: "मुलगा",
+      DAUGHTER: "मुलगी",
+      BROTHER: "भाऊ",
+      SISTER: "बहीण",
+      GRANDFATHER: "आजोबा",
+      GRANDMOTHER: "आजी",
+      HUSBAND: "पती",
+      WIFE: "पत्नी",
+      AUNT: "काकू/मावशी",
+      UNCLE: "काका/मामा",
+      GUARDIAN: "पालक",
+      SELF: "स्वतः",
+      NIECE: "भाची/पुतणी",
+      NEPHEW: "भाचा/पुतण्या",
+      "Grand son": "नातू",
+      OTHERS: "इतर"
+    }
+  },
+  otp: {
+    title: "ओटीपी टाका",
+    close: "बंद करा",
+    instruction: "आपल्या मोबाइल नंबरवर {{mobile}} पाठवलेला ओटीपी टाका",
+    instructionMasked: "आपल्या मोबाइल नंबरवर {{mobile}} पाठवलेला ओटीपी टाका",
+    digitLabel: "ओटीपी अंक {{number}}",
+    submit: "सबमिट करा",
+    verifying: "सत्यापन सुरू आहे...",
+    resendOtp: "ओटीपी पुन्हा पाठवा",
+    resendOtpTimer: "{{seconds}} सेकंदात ओटीपी पुन्हा पाठवा",
+    errors: {
+      invalidOtp: "अवैध ओटीपी. कृपया पुन्हा प्रयत्न करा.",
+      verificationFailed: "सत्यापन करताना त्रुटी आली. कृपया पुन्हा प्रयत्न करा.",
+      resendFailed: "ओटीपी पुन्हा पाठवण्यात अयशस्वी. कृपया पुन्हा प्रयत्न करा."
+    }
+  },
+  common: {
+    accept: "स्वीकारा",
+    displayingFallback: "फॉलबॅक सामग्री दर्शवली जात आहे:",
+    viewDocument: "दस्तऐवज पहा",
+    termsLoadFailed: "अटी लोड करण्यात अयशस्वी. कृपया नंतर पुन्हा प्रयत्न करा.",
+    consentDetails: "सहमतीचा तपशील",
+    summary: "सारांश",
+    details: "तपशीलवार माहिती",
+    loadingConsents: "सहमतीची माहिती लोड केली जात आहे...",
+    viewFullTerms: "पूर्ण अटी पहा",
+    and: "आणि",
+    refreshPage: "पेज रिफ्रेश करा",
+    close: "बंद करा",
+    save: "जतन करा",
+    cancel: "रद्द करा",
+    continue: "पुढे चालू ठेवा"
+  }
+};

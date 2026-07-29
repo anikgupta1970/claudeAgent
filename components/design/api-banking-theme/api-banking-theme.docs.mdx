@@ -1,0 +1,67 @@
+---
+description: A theme defining the ApiBanking design language and design tokens.
+labels: ['react', 'design', 'theme', 'api-banking']
+---
+
+A theme component for using the ApiBanking Design Language and tokens.
+
+## Get started
+
+To use the ApiBanking theme in your app, install the ApiBanking theme and apply it on your component tree.
+Themes are usually applied on the root of your component tree.
+
+```bash
+$ bit install @scope/api-banking-theme
+```
+Alternatively, use PNPM or NPM:
+```bash
+$ npm install @scope/api-banking-theme
+```
+```tsx
+export function MyApp() {
+  return (
+    <ApiBankingTheme>
+      <Homepage />
+    </ApiBankingTheme>
+  );
+}
+```
+## Light Theme Example
+This example showcases the default light theme.
+```tsx
+export function LightThemeExample() {
+  return (
+    <ApiBankingTheme>
+      <div>ApiBanking Theme (Light)</div>
+    </ApiBankingTheme>
+  );
+}
+```
+## Dark Theme Example
+This example showcases the dark theme.
+```tsx
+export function DarkThemeExample() {
+  return (
+    <ApiBankingTheme initialTheme="dark">
+      <div>ApiBanking Theme (Dark)</div>
+    </ApiBankingTheme>
+  );
+}
+```
+## Overriding Tokens Example
+This example shows how to override specific tokens in the theme.
+```tsx
+export function OverridingTokensExample() {
+  const overrides = {
+    colors: {
+      primary: {
+        default: '#00FF00',
+      },
+    },
+  };
+  return (
+    <ApiBankingTheme overrides={overrides}>
+      <div>ApiBanking Theme with Overrides</div>
+    </ApiBankingTheme>
+  );
+}

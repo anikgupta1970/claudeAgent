@@ -1,0 +1,170 @@
+$tablet: 480px;
+$laptop: 1024px;
+
+.container {
+  padding: var(--spacing-xl) var(--spacing-x4);
+  max-width: 720px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.pageTitle {
+  margin-bottom: var(--spacing-xl);
+  font-weight: 500;
+  color: var(--colors-text-primary);
+}
+
+// Animated success icon
+.successIcon {
+  width: 96px;
+  height: 96px;
+  margin: 0 auto var(--spacing-xl);
+  position: relative;
+}
+
+.successCircle {
+  width: 80px;
+  height: 80px;
+  background-color: var(--colors-status-positive-default);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px auto;
+  animation: scaleIn 0.4s ease-out;
+  box-shadow: 0 4px 16px rgba(40, 167, 69, 0.3);
+}
+
+.checkmark {
+  color: white;
+  font-size: 2.5rem;
+  line-height: 1;
+  animation: fadeIn 0.3s ease-out 0.2s both;
+}
+
+@keyframes scaleIn {
+  0% {
+    transform: scale(0);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.successTitle {
+  margin-bottom: var(--spacing-small);
+  font-weight: 600;
+  color: var(--colors-text-primary);
+}
+
+.successSubtitle {
+  color: var(--colors-text-secondary);
+  margin-bottom: var(--spacing-x4);
+  font-size: var(--typography-sizes-body-default);
+}
+
+// Summary cards
+.summaryCard {
+  background-color: var(--colors-surface-secondary);
+  border-radius: var(--borders-radius-medium);
+  padding: var(--spacing-xl);
+  text-align: left;
+  margin-bottom: var(--spacing-xl);
+  border: 1px solid var(--borders-default-color);
+}
+
+.summaryTitle {
+  margin: 0 0 var(--spacing-large) 0;
+  font-weight: 600;
+  color: var(--colors-secondary-default);
+  padding-bottom: var(--spacing-small);
+  border-bottom: 2px solid var(--colors-secondary-default);
+  font-size: var(--typography-sizes-body-default);
+}
+
+.fieldsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-large) var(--spacing-x4);
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fieldFullWidth {
+  grid-column: 1 / -1;
+}
+
+.fieldLabel {
+  color: var(--colors-text-secondary);
+  font-size: var(--typography-sizes-caption-default);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+
+.fieldValue {
+  color: var(--colors-text-primary);
+  font-size: var(--typography-sizes-body-default);
+  font-weight: 500;
+}
+
+.fieldValuePositive {
+  color: var(--colors-status-positive-default);
+  font-size: var(--typography-sizes-body-default);
+  font-weight: 600;
+}
+
+.closeButton {
+  min-width: 200px;
+}
+
+@media screen and (max-width: $laptop) {
+  .container {
+    padding: var(--spacing-large);
+    max-width: 100%;
+  }
+}
+
+@media screen and (max-width: $tablet) {
+  .container {
+    padding: var(--spacing-medium);
+  }
+
+  .fieldsGrid {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-medium);
+  }
+
+  .summaryCard {
+    padding: var(--spacing-medium);
+  }
+
+  .successCircle {
+    width: 64px;
+    height: 64px;
+  }
+
+  .checkmark {
+    font-size: 2rem;
+  }
+}
