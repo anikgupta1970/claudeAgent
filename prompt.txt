@@ -146,6 +146,17 @@ Use ONLY these components. Reference them by their Bit ID: @api-banking/{scope}.
 ### Fixed Deposit — UI
 - @api-banking/fixed-deposit.ui/resume-session-prompt
 
+## API Base URL
+
+All API calls must use this base URL:
+  https://mahendra-shetake.mocks.apibanking.com
+
+Example:
+  POST https://mahendra-shetake.mocks.apibanking.com/forms
+  POST https://mahendra-shetake.mocks.apibanking.com/auth/token/claims
+
+Never use relative paths or placeholder base URLs in generated code.
+
 ## API Contract
 
 The OpenAPI spec is at openapi.yaml in the project root. API request/response examples for the journey flow are documented in docs/BACKEND-DRIVEN.md.
