@@ -1,0 +1,110 @@
+---
+description: A specialized checkbox for handling user consent in flows like login.
+labels: ['login-terms', 'ui', 'form']
+---
+
+A specialized checkbox component designed for handling user consent in flows like login. It extends a base Checkbox, triggering a callback to display consent details instead of directly toggling the state.
+
+## Component usage
+
+Use the component:
+
+```js
+<LoginTerms
+  id="terms-checkbox"
+  label="I agree to the terms and conditions"
+  onViewDetails={() => alert('View terms details')}
+/>
+```
+## Interactive Consent Checkboxes
+This example demonstrates interactive consent checkboxes that trigger a confirmation dialog when clicked.
+```js
+  const [isPolicyAccepted, setPolicyAccepted] = React.useState(false);
+  const [isProductsConsented, setProductsConsented] = React.useState(false);
+  const handleViewPolicyDetails = () => {
+    const confirmed = window.confirm(
+      'Consent Details: Privacy Policy\n\nSummary: I/we have read, understood, and hereby accept the Privacy Policy of the bank.\n\n(Click "OK" to simulate "Accept" in a modal)'
+    );
+    if (confirmed) {
+      setPolicyAccepted(true);
+    }
+  };
+  const handleViewProductDetails = () => {
+    const confirmed = window.confirm(
+      'Consent Details: Requested Products\n\nSummary: I/we hereby give consent (V.1.0) in relation to Requested Products.\n\n(Click "OK" to simulate "Accept" in a modal)'
+    );
+    if (confirmed) {
+      setProductsConsented(true);
+    }
+  };
+  return (
+    <>
+      <LoginTerms
+        id="privacy-policy"
+        checked={isPolicyAccepted}
+        onViewDetails={handleViewPolicyDetails}
+        label="I/we have read, understood, and hereby accept the Privacy Policy of the bank."
+      />
+      <LoginTerms
+        id="requested-products"
+        checked={isProductsConsented}
+        onViewDetails={handleViewProductDetails}
+        label="I/we hereby give consent (V.1.0) in relation to Requested Products"
+      />
+    </>
+  );
+```
+## Consent Checkbox with Details Link
+This example shows a consent checkbox with a "View Details" link embedded in the label.
+```js
+  const [isTermsAccepted, setTermsAccepted] = React.useState(false);
+  const handleViewTerms = () => {
+    const confirmed = window.confirm(
+      'Consent Details: Full Terms\n\nClicking the label text or the "View Details" link will trigger this confirmation.\n\n(Click "OK" to accept)'
+    );
+    if (confirmed) {
+      setTermsAccepted(true);
+    }
+  };
+  const onLinkClick = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    handleViewTerms();
+  };
+  return (
+    <>
+      <LoginTerms
+        id="terms-and-conditions"
+        checked={isTermsAccepted}
+        onViewDetails={handleViewTerms}
+        label={
+          <span>
+            I agree to the full terms. {' '}
+            <Link href="#" onClick={onLinkClick}>
+              View Details
+            </Link>
+          </span>
+        }
+      />
+    </>
+  );
+```
+## Disabled Consent Checkboxes
+This example showcases disabled consent checkboxes in both checked and unchecked states.
+```js
+    <>
+      <LoginTerms
+        id="disabled-unchecked"
+        disabled
+        onViewDetails={() => alert('This should not be called.')}
+        label="Disabled and unchecked consent"
+      />
+      <LoginTerms
+        id="disabled-checked"
+        checked
+        disabled
+        onViewDetails={() => alert('This should not be called.')}
+        label="Disabled and checked consent"
+      />
+    </>
+  );
