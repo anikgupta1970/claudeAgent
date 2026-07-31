@@ -34,6 +34,18 @@ async function request<T>(
 
 export const BEARER_TOKEN = DEMO_TOKEN;
 
+export interface SendOtpResponse {
+  sessionId: string;
+}
+
+export interface VerifyOtpResponse {
+  token: string;
+  customerId: string;
+  name: string;
+  dob: string;
+  pan?: string;
+}
+
 export interface FindCustomerResponse {
   customerId: string;
   name: string;
@@ -81,6 +93,14 @@ export interface CalculatorResponse {
   maturityDate?: string;
   startDate?: string;
   interestEarned?: { amount: number; currency: string };
+}
+
+export function sendOtp(params: { mobile: string; credentialType: 'mobile_dob' | 'mobile_pan' }) {
+  return request<SendOtpResponse>('/auth/otp/send', { method: 'POST', body: JSON.stringify(params) });
+}
+
+export function verifyOtp(params: { sessionId: string; otp: string; mobile: string; dob?: string; pan?: string }) {
+  return request<VerifyOtpResponse>('/auth/otp/verify', { method: 'POST', body: JSON.stringify(params) });
 }
 
 export function findCustomer(params: { mobile: string; dob?: string; pan?: string }) {

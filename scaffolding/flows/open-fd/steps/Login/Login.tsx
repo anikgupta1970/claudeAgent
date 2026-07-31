@@ -12,7 +12,7 @@ import { Heading } from '@api-banking/design.typography.heading';
 import { Paragraph } from '@api-banking/design.typography.paragraph';
 import { Flex } from '@api-banking/design.layouts.flex';
 import { useJourney } from '../../context/JourneyContext';
-import { findCustomer, getCustomerAccounts } from '../../api/client';
+import { sendOtp, verifyOtp, getCustomerAccounts } from '../../api/client';
 import type { CustomerInfo, AccountInfo } from '../../types';
 
 const CONSENTS = [
@@ -40,7 +40,9 @@ export default function Login() {
   const [consents, setConsents] = useState({ c1: false, c2: false });
   const [activeConsent, setActiveConsent] = useState<(typeof CONSENTS)[0] | null>(null);
   const [showOtp, setShowOtp] = useState(false);
+  const [sendOtpLoading, setSendOtpLoading] = useState(false);
   const [otpLoading, setOtpLoading] = useState(false);
+  const [sessionId, setSessionId] = useState('');
   const [error, setError] = useState('');
 
   const MOBILE_RE = /^[0-9]{10}$/;
@@ -50,22 +52,31 @@ export default function Login() {
   const secondaryValid = verifyMode === 'dob' ? dob.length === 10 : PAN_RE.test(pan);
   const canContinue = mobileValid && secondaryValid && consents.c1 && consents.c2;
 
-  async function handleOtpSubmit(_otp: string) {
+  async function handleContinue() {
+    setError('');
+    setSendOtpLoading(true);
+    try {
+      const result = await sendOtp({ mobile, credentialType: verifyMode === 'dob' ? 'mobile_dob' : 'mobile_pan' });
+      setSessionId(result.sessionId);
+      setShowOtp(true);
+    } catch {
+      setError('Failed to send OTP. Please try again.');
+    } finally {
+      setSendOtpLoading(false);
+    }
+  }
+
+  async function handleOtpSubmit(otp: string) {
     setOtpLoading(true);
     setError('');
     try {
-      const findParams: { mobile: string; dob?: string; pan?: string } = { mobile };
-      if (verifyMode === 'dob') findParams.dob = dob;
-      else findParams.pan = pan.toUpperCase();
+      const verifyParams: { sessionId: string; otp: string; mobile: string; dob?: string; pan?: string } = { sessionId, otp, mobile };
+      if (verifyMode === 'dob') verifyParams.dob = dob;
+      else verifyParams.pan = pan.toUpperCase();
 
-      const found = await findCustomer(findParams);
-      if (!found?.customerId) {
-        setError('We could not find an account linked to this mobile number. Please check and try again.');
-        setShowOtp(false);
-        return;
-      }
+      const verified = await verifyOtp(verifyParams);
 
-      const accounts = await getCustomerAccounts(found.customerId);
+      const accounts = await getCustomerAccounts(verified.customerId);
       const saAccount = (Array.isArray(accounts) ? accounts : []).find((a) => a.productCategory === 'sa') ?? accounts?.[0];
       if (!saAccount) {
         setError('No linked savings account found. Please contact your branch.');
@@ -74,10 +85,10 @@ export default function Login() {
       }
 
       const customer: CustomerInfo = {
-        customerId: found.customerId,
-        name: found.name,
-        dob: found.dob ?? dob,
-        pan: found.pan ?? (verifyMode === 'pan' ? pan.toUpperCase() : ''),
+        customerId: verified.customerId,
+        name: verified.name,
+        dob: verified.dob,
+        pan: verified.pan ?? (verifyMode === 'pan' ? pan.toUpperCase() : ''),
         mobile,
       };
       const account: AccountInfo = {
@@ -86,10 +97,11 @@ export default function Login() {
         currentBalance: String(saAccount.currentBalance?.amount ?? '0.00'),
       };
 
-      dispatch({ type: 'SET_AUTH', payload: { bearerToken: 'DEMO_TOKEN', customer, account } });
+      dispatch({ type: 'SET_AUTH', payload: { bearerToken: verified.token, customer, account } });
     } catch (err: unknown) {
       const e = err as { status?: number };
-      if (e.status === 404) setError('We could not find an account linked to this mobile number. Please check and try again.');
+      if (e.status === 401) setError('Invalid OTP. Please try again.');
+      else if (e.status === 404) setError('We could not find an account linked to this mobile number. Please check and try again.');
       else if (e.status === 400) setError('The details entered do not match our records. Please try again.');
       else setError('Something went wrong. Please try again in a moment.');
       setShowOtp(false);
@@ -186,8 +198,8 @@ export default function Login() {
       {error && <Paragraph style={{ color: 'var(--colors-status-negative-default)', marginTop: 8 }}>{error}</Paragraph>}
 
       <div className={styles.footer}>
-        <CtaButton disabled={!canContinue} onClick={() => { setError(''); setShowOtp(true); }}>
-          Continue
+        <CtaButton disabled={!canContinue || sendOtpLoading} onClick={handleContinue}>
+          {sendOtpLoading ? 'Sending OTP…' : 'Continue'}
         </CtaButton>
       </div>
 

@@ -118,6 +118,74 @@ All errors use **RFC 7807 Problem Details** (`application/problem+json`):
 
 ## Stitch API Endpoints
 
+### POST /auth/otp/send
+
+Send an OTP to the customer's registered mobile number. Called when the customer clicks Continue on the Login step.
+
+**Auth:** None  
+**Response:** 200 OK
+
+**Request body:**
+```json
+{
+  "mobile": "9087654321",
+  "credentialType": "mobile_dob | mobile_pan"
+}
+```
+
+**Response body:**
+```json
+{
+  "sessionId": "string"
+}
+```
+
+Store `sessionId` — it is required for the subsequent `POST /auth/otp/verify` call.
+
+**Error states:**
+- 404 — mobile number not found in the system
+- 429 — too many OTP requests; ask customer to try later
+
+---
+
+### POST /auth/otp/verify
+
+Verify the OTP entered by the customer. Called when the customer submits the OTP modal. Returns a bearer token and customer identity on success.
+
+**Auth:** None  
+**Response:** 200 OK
+
+**Request body:**
+```json
+{
+  "sessionId": "string",
+  "otp": "123456",
+  "mobile": "9087654321",
+  "dob": "1990-01-01 (required when credentialType=mobile_dob)",
+  "pan": "ABCDE1234F (required when credentialType=mobile_pan)"
+}
+```
+
+**Response body:**
+```json
+{
+  "token": "string (Bearer token for subsequent API calls)",
+  "customerId": "string (UCIC)",
+  "name": "string",
+  "dob": "1990-01-01",
+  "pan": "ABCDE1234F (optional)"
+}
+```
+
+Use the returned `token` as the Bearer token for all subsequent calls (`getCustomerAccounts`, `submitForm`, etc.).
+
+**Error states:**
+- 401 — OTP is invalid or expired
+- 400 — DOB or PAN does not match records
+- 404 — customer not found
+
+---
+
 ### POST /auth/token/claims
 
 Generate a JWT token with customer identity claims.
