@@ -95,7 +95,10 @@ export default function App() {
   return (
     <div className={styles.app}>
       <Header
-        logoProps={{ name: 'API Banking', slogan: 'Banking Journey Builder' }}
+        logoProps={{
+          logo: <img src="https://stitch-preview-spliceforms-ui.apps.rosa.sdev.mi7j.p3.openshiftapps.com/logo.svg" alt="API Banking" style={{ height: '40px' }} />,
+          minimal: true,
+        }}
       />
 
       <div className={styles.chatArea} ref={chatRef}>
