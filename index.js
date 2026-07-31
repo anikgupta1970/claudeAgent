@@ -34,6 +34,8 @@ function readSource(relPath) {
 }
 
 const basePrompt = readFileSync(join(__dirname, 'prompt.txt'), 'utf-8');
+const stitchSkill = readFileSync(join(__dirname, 'Stitch-Skill.md'), 'utf-8');
+const uiSkillFD = readFileSync(join(__dirname, 'UI_SKILLS_FD.md'), 'utf-8');
 const componentExports = loadFiles(join(__dirname, 'components'));
 
 const UI_REFERENCE_FILES = [
@@ -74,6 +76,18 @@ function loadScaffolding(scaffoldingDir) {
 const scaffolding = loadScaffolding(join(__dirname, 'scaffolding'));
 
 const SYSTEM_PROMPT = `${basePrompt}
+
+---
+
+# PART 1 — Stitch Backend Capabilities Reference
+
+${stitchSkill}
+
+---
+
+# PART 2 — UI Skill: Banking Journey Builder (FD)
+
+${uiSkillFD}
 
 ---
 
