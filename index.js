@@ -54,8 +54,6 @@ const uiReference = UI_REFERENCE_FILES
   .map(f => `// ${f}\n${readSource(f)}`)
   .join('\n\n');
 
-const stitchClient = readSource('stitch/stitch-client/stitch-client.ts');
-
 function loadScaffolding(scaffoldingDir) {
   const entries = [];
   function walk(dir) {
@@ -79,16 +77,7 @@ const SYSTEM_PROMPT = `${basePrompt}
 
 ---
 
-# PART 4 — Stitch API Client (use this when making API calls)
-
-This is the existing typed API client. Always use createStitchClient and its methods instead of writing raw fetch calls.
-Configure baseUrl using the VITE_STITCH_API_BASE_URL environment variable, which should be set to https://mahendra-shetake.mocks.apibanking.com.
-
-${stitchClient}
-
----
-
-# PART 5 — Existing UI Implementations (reference these exactly)
+# PART 4 — Existing UI Implementations (reference these exactly)
 
 These are the actual implemented components. When building any journey, replicate these patterns exactly — same structure, same design tokens, same component usage, same props. Do not deviate from these implementations.
 
@@ -96,7 +85,7 @@ ${uiReference}
 
 ---
 
-# PART 6 — Component Public Exports (index.ts files)
+# PART 5 — Component Public Exports (index.ts files)
 
 When generating imports, use ONLY what is exported here. Do not invent exports that are not listed.
 
@@ -104,9 +93,18 @@ ${componentExports}
 
 ---
 
-# PART 7 — App Scaffolding Templates
+# PART 6 — App Scaffolding Templates
 
-These are the canonical files for wiring a standalone Vite app. Use these exact patterns when generating a full app. Components are imported via the Vite aliases in vite.config.ts (e.g. \`@api-banking/design.actions.button\`). Do NOT use Bit workspace commands or raw Bit component IDs as import paths.
+These are the canonical files for wiring a standalone Vite app. The scaffolding is organized into two directories:
+
+- **shared/** — reusable across all flows: main.tsx, index.css, vite.config.ts, api/client.ts, and shared components (AppShell, Stepper, OtpInput, CardRadio, Modal, InfoBanner)
+- **flows/open-fd/** — FD-specific: App.tsx, JourneyContext.tsx, types/index.ts, utils/tenure.ts, step components, and DebugPanel
+
+When generating a new flow, copy the shared/ structure as-is and create a new flows/<flow-name>/ directory following the open-fd pattern.
+
+Components are imported via the Vite aliases in vite.config.ts (e.g. \`@api-banking/design.actions.button\`). Do NOT use Bit workspace commands or raw Bit component IDs as import paths.
+
+The API client in shared/api/client.ts makes all Stitch API calls. Always use its exported functions (findCustomer, getCustomerAccounts, getProductConfig, calculateFD, getBranches, getNomineeRelationships, submitForm, etc.) instead of writing raw fetch calls. The base URL is configured via the VITE_STITCH_API_BASE_URL environment variable, set to https://mahendra-shetake.mocks.apibanking.com.
 
 IMPORTANT: Always include DebugPanel in every generated app — it is a must-have feature. It lives at src/components/DebugPanel/ and provides 4 tabs: App Logs (console intercept), Network (fetch intercept with request/response bodies), App Data (live JourneyContext state), and Pages (step progress). It is already wired into App.tsx.
 
