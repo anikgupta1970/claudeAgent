@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { marked } from 'marked';
 import { Header } from '@api-banking/design.navigation.header';
 import styles from './App.module.scss';
 
@@ -17,17 +18,7 @@ const SUGGESTIONS = [
 ];
 
 function formatText(text: string): string {
-  let s = text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;');
-  s = s.replace(/```(\w*)\n?([\s\S]*?)```/g, (_: string, __: string, code: string) =>
-    `<pre><code>${code.trimEnd()}</code></pre>`
-  );
-  s = s.replace(/`([^`]+)`/g, '<code>$1</code>');
-  s = s.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
-  s = s.replace(/\n/g, '<br>');
-  return s;
+  return marked.parse(text) as string;
 }
 
 export default function App() {
