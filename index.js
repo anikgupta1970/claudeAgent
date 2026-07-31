@@ -57,10 +57,20 @@ const uiReference = UI_REFERENCE_FILES
 const stitchClient = readSource('stitch/stitch-client/stitch-client.ts');
 
 function loadScaffolding(scaffoldingDir) {
-  const files = ['App.tsx', 'JourneyContext.tsx', 'vite.config.ts', 'DebugPanel.tsx', 'DebugPanel.module.css'];
-  return files
-    .map((f) => `// ${f}\n${readFileSync(join(scaffoldingDir, f), 'utf-8')}`)
-    .join('\n\n');
+  const entries = [];
+  function walk(dir) {
+    for (const entry of readdirSync(dir).sort()) {
+      const full = join(dir, entry);
+      if (statSync(full).isDirectory()) {
+        walk(full);
+      } else if (/\.(tsx?|css)$/.test(entry)) {
+        const rel = full.replace(scaffoldingDir + '/', '');
+        entries.push(`// ${rel}\n${readFileSync(full, 'utf-8')}`);
+      }
+    }
+  }
+  walk(scaffoldingDir);
+  return entries.join('\n\n');
 }
 
 const scaffolding = loadScaffolding(join(__dirname, 'scaffolding'));

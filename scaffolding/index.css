@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Colors - Primary */
+  --colors-primary-default: #E30613;
+  --colors-primary-hover: #F31623;
+  --colors-primary-active: #C90512;
+
+  /* Colors - Secondary */
+  --colors-secondary-default: #0072C6;
+  --colors-secondary-hover: #0082E0;
+  --colors-secondary-active: #0062AC;
+
+  /* Colors - Surface */
+  --colors-surface-background: #F7F8FA;
+  --colors-surface-primary: #FFFFFF;
+  --colors-surface-secondary: #E9ECEF;
+
+  /* Colors - Text */
+  --colors-text-primary: #1D2329;
+  --colors-text-default: #1D2329;
+  --colors-text-secondary: #6C757D;
+  --colors-text-inverse: #FFFFFF;
+
+  /* Colors - Status */
+  --colors-status-positive-default: #28A745;
+  --colors-status-positive-subtle: #D4EDDA;
+  --colors-status-negative-default: #DC3545;
+  --colors-status-negative-subtle: #F8D7DA;
+  --colors-status-warning-default: #FFC107;
+  --colors-status-warning-subtle: #FFF3CD;
+  --colors-status-info-default: #0072C6;
+  --colors-status-info-subtle: #CCE5FF;
+
+  /* Colors - Other */
+  --colors-overlay: rgba(29, 35, 41, 0.5);
+  --colors-accent-default: #8B2D8B;
+  --colors-accent-hover: #9B3D9B;
+  --colors-accent-active: #7B1D7B;
+  --colors-surface-dark-default: #003366;
+  --colors-surface-dark-hover: #004080;
+  --colors-surface-dark-active: #002952;
+
+  /* Borders */
+  --borders-default-color: #CED4DA;
+  --borders-default-width: 1px;
+  --borders-default-style: solid;
+  --borders-focus-color: #0072C6;
+  --borders-focus-width: 2px;
+  --borders-focus-style: solid;
+  --borders-focus-offset: 2px;
+  --borders-radius-small: 4px;
+  --borders-radius-medium: 8px;
+  --borders-radius-large: 16px;
+
+  /* Typography */
+  --typography-font-family: 'Poppins', sans-serif, Arial;
+  --typography-sizes-display-large: 60px;
+  --typography-sizes-display-medium: 48px;
+  --typography-sizes-display-small: 36px;
+  --typography-sizes-heading-h1: 32px;
+  --typography-sizes-heading-h2: 28px;
+  --typography-sizes-heading-h3: 24px;
+  --typography-sizes-heading-h4: 20px;
+  --typography-sizes-heading-h5: 18px;
+  --typography-sizes-heading-h6: 16px;
+  --typography-sizes-body-large: 18px;
+  --typography-sizes-body-medium: 16px;
+  --typography-sizes-body-default: 16px;
+  --typography-sizes-body-small: 14px;
+  --typography-sizes-caption-default: 12px;
+  --typography-sizes-caption-medium: 14px;
+  --typography-line-height-base: 1.6;
+  --typography-line-height-heading: 1.3;
+  --typography-font-weight-regular: 400;
+  --typography-font-weight-medium: 500;
+  --typography-font-weight-semi-bold: 600;
+  --typography-font-weight-bold: 700;
+  --typography-letter-spacing-tight: -0.02em;
+  --typography-letter-spacing-normal: 0;
+  --typography-letter-spacing-wide: 0.03em;
+
+  /* Spacing */
+  --spacing-default: 16px;
+  --spacing-medium: 16px;
+  --spacing-small: 8px;
+  --spacing-large: 24px;
+  --spacing-xl: 32px;
+  --spacing-x4: 48px;
+
+  /* Layout */
+  --layout-max-page-width: 1280px;
+  --layout-gutter: 24px;
+
+  /* Effects - Shadows */
+  --effects-shadows-xs: 0px 1px 2px rgba(29, 35, 41, 0.05);
+  --effects-shadows-small: 0px 2px 4px rgba(29, 35, 41, 0.08);
+  --effects-shadows-medium: 0px 8px 16px rgba(29, 35, 41, 0.08);
+  --effects-shadows-large: 0px 12px 24px rgba(29, 35, 41, 0.12);
+  --effects-shadows-x-large: 0px 16px 32px rgba(29, 35, 41, 0.15);
+  --effects-shadows-inset: inset 0px 1px 2px rgba(0, 0, 0, 0.06);
+  --effects-shadows-raised: 0px 4px 12px rgba(0, 0, 0, 0.1), 0px 2px 4px rgba(0, 0, 0, 0.06);
+
+  /* Effects - Opacity */
+  --effects-opacity-disabled: 0.5;
+  --effects-opacity-hover: 0.8;
+  --effects-opacity-faint: 0.2;
+  --effects-opacity-semi-opaque: 0.7;
+
+  /* Effects - Gradients */
+  --effects-gradients-primary: linear-gradient(to right, #E30613, #FF4136);
+  --effects-gradients-secondary: linear-gradient(to right, #0072C6, #0082E0);
+  --effects-gradients-radial: radial-gradient(circle, #E30613, #C90512);
+
+  /* Effects - Blur */
+  --effects-blur-small: blur(4px);
+  --effects-blur-medium: blur(8px);
+  --effects-blur-large: blur(16px);
+
+  /* Interactions - Cursor */
+  --interactions-cursor-pointer: pointer;
+  --interactions-cursor-disabled: not-allowed;
+  --interactions-cursor-text: text;
+  --interactions-cursor-grab: grab;
+  --interactions-cursor-grabbing: grabbing;
+
+  /* Interactions - Z-Index */
+  --interactions-z-index-base: 1;
+  --interactions-z-index-modal: 100;
+  --interactions-z-index-tooltip: 200;
+  --interactions-z-index-overlay: 300;
+  --interactions-z-index-sticky: 50;
+
+  /* Interactions - Transitions */
+  --interactions-transitions-duration-fast: 0.15s;
+  --interactions-transitions-duration-medium: 0.3s;
+  --interactions-transitions-duration-slow: 0.5s;
+  --interactions-transitions-easing-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --interactions-transitions-easing-ease-out: ease-out;
+  --interactions-transitions-easing-ease-in: ease-in;
+  --interactions-transitions-easing-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  /* Interactions - Hover Effects */
+  --interactions-hover-effect-scale: scale(1.03);
+  --interactions-hover-effect-translate-y: translateY(-2px);
+  --interactions-hover-effect-shadow: 0px 6px 12px rgba(29, 35, 41, 0.1);
+
+  /* Legacy vars kept for AppShell Stepper */
+  --navy: #003366;
+  --coral: #E30613;
+  --purple: #8B2D8B;
+  --green: #28A745;
+  --bg: #F7F8FA;
+  --font: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--typography-font-family);
+  background: var(--colors-surface-background);
+  color: var(--colors-text-default);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+input,
+select,
+button,
+textarea {
+  font-family: inherit;
+}

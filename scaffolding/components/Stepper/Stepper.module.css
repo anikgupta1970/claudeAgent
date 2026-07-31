@@ -1,0 +1,86 @@
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 20px 24px;
+  background: var(--colors-surface-dark-default);
+  overflow-x: auto;
+}
+
+.step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  position: relative;
+  min-width: 0;
+}
+
+.step:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  top: 14px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.2);
+  z-index: 0;
+}
+
+.step.completed:not(:last-child)::after {
+  background: var(--colors-primary-default);
+}
+
+.circle {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.6);
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+  transition: all var(--interactions-transitions-duration-fast) ease;
+}
+
+.step.active .circle {
+  border-color: var(--colors-primary-default);
+  background: var(--colors-primary-default);
+  color: var(--colors-text-inverse);
+  box-shadow: 0 0 0 3px rgba(227, 6, 19, 0.3);
+}
+
+.step.completed .circle {
+  border-color: var(--colors-primary-default);
+  background: var(--colors-primary-default);
+  color: var(--colors-text-inverse);
+}
+
+.label {
+  margin-top: 6px;
+  font-size: 10px;
+  color: rgba(255, 255, 255, 0.5);
+  white-space: nowrap;
+  text-align: center;
+  font-weight: 500;
+}
+
+.step.active .label {
+  color: var(--colors-text-inverse);
+  font-weight: 700;
+}
+
+.step.completed .label {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.checkIcon {
+  width: 14px;
+  height: 14px;
+}

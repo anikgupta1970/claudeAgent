@@ -1,0 +1,48 @@
+.group {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 120px;
+  padding: 14px 16px;
+  border: 2px solid #e5e7eb;
+  border-radius: 10px;
+  cursor: pointer;
+  background: #fff;
+  transition: border-color 0.15s, background 0.15s;
+  text-align: left;
+}
+
+.card:hover {
+  border-color: #9ca3af;
+}
+
+.card.selected {
+  border-color: var(--navy);
+  background: #f0f4f8;
+}
+
+.card.selectedPurple {
+  border-color: var(--purple);
+  background: #f5f2ff;
+}
+
+.card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--navy);
+}
+
+.sub {
+  font-size: 12px;
+  color: #6b7280;
+  margin-top: 4px;
+}

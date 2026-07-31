@@ -1,0 +1,24 @@
+.shell {
+  min-height: 100vh;
+  background: var(--colors-surface-background);
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 32px 16px 48px;
+}
+
+.card {
+  background: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-large);
+  box-shadow: var(--effects-shadows-raised);
+  width: 100%;
+  max-width: 640px;
+  overflow: hidden;
+}
