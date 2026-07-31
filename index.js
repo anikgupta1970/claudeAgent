@@ -122,38 +122,43 @@ function createMcpServer() {
     }
 
     const { query } = request.params.arguments;
-
-    const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6',
-      max_tokens: 8096,
-      system: [
-        {
-          type: 'text',
-          text: SYSTEM_PROMPT,
-          cache_control: { type: 'ephemeral' },
-        },
-      ],
-      messages: [{ role: 'user', content: query }],
-    });
-
-    const text = response.content
-      .filter((block) => block.type === 'text')
-      .map((block) => block.text)
-      .join('\n');
-
-    return {
-      content: [{ type: 'text', text }],
-    };
+    const text = await runAssistant(query);
+    return { content: [{ type: 'text', text }] };
   });
 
   return server;
 }
 
+async function runAssistant(query) {
+  const response = await anthropic.messages.create({
+    model: 'claude-sonnet-4-6',
+    max_tokens: 8096,
+    system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
+    messages: [{ role: 'user', content: query }],
+  });
+  return response.content.filter((b) => b.type === 'text').map((b) => b.text).join('\n');
+}
+
 const app = express();
 app.use(express.json());
+app.use(express.static(join(__dirname, 'public')));
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'banking-journey-builder' });
+});
+
+app.post('/chat', async (req, res) => {
+  const { query } = req.body;
+  if (!query || typeof query !== 'string') {
+    return res.status(400).json({ error: 'query is required' });
+  }
+  try {
+    const text = await runAssistant(query);
+    res.json({ text });
+  } catch (err) {
+    console.error('Chat error:', err);
+    res.status(500).json({ error: err.message ?? 'Internal server error' });
+  }
 });
 
 app.get('/setup', (_req, res) => {
