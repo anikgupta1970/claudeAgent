@@ -57,7 +57,7 @@ const uiReference = UI_REFERENCE_FILES
 const stitchClient = readSource('stitch/stitch-client/stitch-client.ts');
 
 function loadScaffolding(scaffoldingDir) {
-  const files = ['App.tsx', 'JourneyContext.tsx', 'vite.config.ts'];
+  const files = ['App.tsx', 'JourneyContext.tsx', 'vite.config.ts', 'DebugPanel.tsx', 'DebugPanel.module.css'];
   return files
     .map((f) => `// ${f}\n${readFileSync(join(scaffoldingDir, f), 'utf-8')}`)
     .join('\n\n');
@@ -97,6 +97,8 @@ ${componentExports}
 # PART 7 — App Scaffolding Templates
 
 These are the canonical files for wiring a standalone Vite app. Use these exact patterns when generating a full app. Components are imported via the Vite aliases in vite.config.ts (e.g. \`@api-banking/design.actions.button\`). Do NOT use Bit workspace commands or raw Bit component IDs as import paths.
+
+IMPORTANT: Always include DebugPanel in every generated app — it is a must-have feature. It lives at src/components/DebugPanel/ and provides 4 tabs: App Logs (console intercept), Network (fetch intercept with request/response bodies), App Data (live JourneyContext state), and Pages (step progress). It is already wired into App.tsx.
 
 ${scaffolding}`;
 
