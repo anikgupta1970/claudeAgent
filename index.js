@@ -7,11 +7,15 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
-import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
+import {
+  CallToolRequestSchema,
+  ListToolsRequestSchema,
+  ListResourcesRequestSchema,
+  ReadResourceRequestSchema,
+} from '@modelcontextprotocol/sdk/types.js';
 import Anthropic from '@anthropic-ai/sdk';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
 
 const basePrompt = readFileSync(join(__dirname, 'prompt.txt'), 'utf-8');
 const stitchSkill = readFileSync(join(__dirname, 'Stitch-Skill.md'), 'utf-8');
@@ -69,18 +73,61 @@ IMPORTANT: Always include DebugPanel in every generated app — it is a must-hav
 
 ${scaffolding}`;
 
-if (!process.env.ANTHROPIC_API_KEY) {
-  console.error('ANTHROPIC_API_KEY environment variable is required');
-  process.exit(1);
+// Anthropic client — only used for /chat web UI (optional)
+const anthropic = process.env.ANTHROPIC_API_KEY
+  ? new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+  : null;
+
+async function runAssistant(query) {
+  if (!anthropic) throw new Error('ANTHROPIC_API_KEY not configured on server');
+  const response = await anthropic.messages.create({
+    model: 'claude-sonnet-4-6',
+    max_tokens: 8096,
+    system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
+    messages: [{ role: 'user', content: query }],
+  });
+  return response.content.filter((b) => b.type === 'text').map((b) => b.text).join('\n');
 }
 
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+const RESOURCES = [
+  {
+    uri: 'banking://stitch-api',
+    name: 'Stitch API Reference',
+    description: 'Complete Stitch backend API — endpoints, instruction types, section types, schemas, enums',
+    mimeType: 'text/markdown',
+  },
+  {
+    uri: 'banking://ui-skill-fd',
+    name: 'FD Journey UI Skill',
+    description: 'UI journey spec for Open Fixed Deposit — all 5 steps, fields, validation, and UX patterns',
+    mimeType: 'text/markdown',
+  },
+  {
+    uri: 'banking://vite-architecture',
+    name: 'Vite App Architecture',
+    description: 'Standalone Vite app structure, import paths, styling rules, API client rules',
+    mimeType: 'text/markdown',
+  },
+  {
+    uri: 'banking://scaffolding',
+    name: 'App Scaffolding',
+    description: 'Complete source files for the standalone Vite app — shared components, FD steps, fd-components design system',
+    mimeType: 'text/plain',
+  },
+];
+
+const RESOURCE_CONTENT = {
+  'banking://stitch-api': stitchSkill,
+  'banking://ui-skill-fd': uiSkillFD,
+  'banking://vite-architecture': basePrompt,
+  'banking://scaffolding': scaffolding,
+};
 
 function createMcpServer() {
   const server = new Server(
     { name: 'banking-journey-builder', version: '1.0.0' },
     {
-      capabilities: { tools: {} },
+      capabilities: { tools: {}, resources: {} },
       instructions:
         'Welcome to the Fixed Deposit Journey Builder by API Banking!\n\n' +
         'I can help you build a complete Open FD onboarding journey for existing bank customers.\n\n' +
@@ -92,6 +139,7 @@ function createMcpServer() {
     }
   );
 
+  // Tools
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
     tools: [
       {
@@ -116,27 +164,34 @@ function createMcpServer() {
     ],
   }));
 
+  // Tool call — returns full context for Claude (client) to generate the response.
+  // No Anthropic API call here; the calling Claude instance uses its own subscription.
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
     if (request.params.name !== 'banking_assistant') {
       throw new Error(`Unknown tool: ${request.params.name}`);
     }
-
     const { query } = request.params.arguments;
-    const text = await runAssistant(query);
-    return { content: [{ type: 'text', text }] };
+    return {
+      content: [
+        {
+          type: 'text',
+          text: `${SYSTEM_PROMPT}\n\n---\n\nUser request: ${query}\n\nPlease respond to the above request using the full context provided above.`,
+        },
+      ],
+    };
+  });
+
+  // Resources
+  server.setRequestHandler(ListResourcesRequestSchema, async () => ({ resources: RESOURCES }));
+
+  server.setRequestHandler(ReadResourceRequestSchema, async (request) => {
+    const { uri } = request.params;
+    const text = RESOURCE_CONTENT[uri];
+    if (!text) throw new Error(`Unknown resource: ${uri}`);
+    return { contents: [{ uri, mimeType: 'text/markdown', text }] };
   });
 
   return server;
-}
-
-async function runAssistant(query) {
-  const response = await anthropic.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 8096,
-    system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
-    messages: [{ role: 'user', content: query }],
-  });
-  return response.content.filter((b) => b.type === 'text').map((b) => b.text).join('\n');
 }
 
 const app = express();
@@ -147,10 +202,16 @@ app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'banking-journey-builder' });
 });
 
+// /chat — web UI endpoint, requires ANTHROPIC_API_KEY on server
 app.post('/chat', async (req, res) => {
   const { query } = req.body;
   if (!query || typeof query !== 'string') {
     return res.status(400).json({ error: 'query is required' });
+  }
+  if (!anthropic) {
+    return res.status(503).json({
+      error: 'The chat UI requires an ANTHROPIC_API_KEY configured on the server. MCP tool access (Claude Code / claude.ai) works without it.',
+    });
   }
   try {
     const text = await runAssistant(query);
@@ -211,4 +272,6 @@ app.all('/mcp', async (req, res) => {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, '0.0.0.0', () => {
   console.log(`Banking Journey Builder MCP server running on port ${PORT}`);
+  console.log(`MCP tool: no API key needed (uses client's Claude subscription)`);
+  console.log(`Chat UI: ${anthropic ? 'enabled' : 'disabled (set ANTHROPIC_API_KEY to enable)'}`);
 });
