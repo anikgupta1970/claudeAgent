@@ -20,6 +20,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const basePrompt = readFileSync(join(__dirname, 'prompt.txt'), 'utf-8');
 const stitchSkill = readFileSync(join(__dirname, 'Stitch-Skill.md'), 'utf-8');
 const uiSkillFD = readFileSync(join(__dirname, 'UI_SKILLS_FD.md'), 'utf-8');
+const uiSkillSA = readFileSync(join(__dirname, 'UI_SKILLS_SA.md'), 'utf-8');
 
 function loadScaffolding(scaffoldingDir) {
   const entries = [];
@@ -53,6 +54,12 @@ ${stitchSkill}
 # PART 2 — UI Skill: Banking Journey Builder (FD)
 
 ${uiSkillFD}
+
+---
+
+# PART 2B — UI Skill: Open Savings Account (Documentation Only)
+
+${uiSkillSA}
 
 ---
 
@@ -114,11 +121,18 @@ const RESOURCES = [
     description: 'Complete source files for the standalone Vite app — shared components, FD steps, fd-components design system',
     mimeType: 'text/plain',
   },
+  {
+    uri: 'banking://ui-skill-sa',
+    name: 'Open SA Journey UI Skill',
+    description: 'UI journey spec for Open Savings Account (NTB) — 2 flows: Partner Channel (Aadhaar OTP eKYC only) and Non-Partner Channel (all KYC methods). Documentation only — app generation not yet supported.',
+    mimeType: 'text/markdown',
+  },
 ];
 
 const RESOURCE_CONTENT = {
   'banking://stitch-api': stitchSkill,
   'banking://ui-skill-fd': uiSkillFD,
+  'banking://ui-skill-sa': uiSkillSA,
   'banking://vite-architecture': basePrompt,
   'banking://scaffolding': scaffolding,
 };
@@ -129,13 +143,17 @@ function createMcpServer() {
     {
       capabilities: { tools: {}, resources: {} },
       instructions:
-        'Welcome to the Fixed Deposit Journey Builder by API Banking!\n\n' +
-        'I can help you build a complete Open FD onboarding journey for existing bank customers.\n\n' +
-        'What I can do:\n' +
-        '  • Build the full 5-step FD journey (Login → Deposit Details → Bank Details → Preview → Success)\n' +
-        '  • Generate correct Stitch API payloads for FD form submission\n' +
-        '  • Answer questions about FD-specific API schemas and validation rules\n\n' +
-        'To get started: "Build an Open FD journey for an existing customer"',
+        'Welcome to the Banking Journey Builder by API Banking!\n\n' +
+        'I support 2 journeys:\n\n' +
+        '1. Open Fixed Deposit (existing customer) — fully supported\n' +
+        '   • Build the full 5-step FD journey (Login → Deposit Details → Bank Details → Preview → Success)\n' +
+        '   • Generate correct Stitch API payloads for FD form submission\n' +
+        '   • Answer questions about FD-specific API schemas and validation rules\n\n' +
+        '2. Open Savings Account (new to bank) — documentation only (app generation coming soon)\n' +
+        '   • 2 flows: Partner Channel (Aadhaar OTP eKYC only) and Non-Partner Channel (all KYC methods)\n' +
+        '   • 7-step journey: Personal Details → Address → Contact & Employment → KYC → Account Preferences → Preview → Done\n' +
+        '   • Non-Partner Channel supports 3 KYC options: Aadhaar OTP, Biometric, and In-Person Verification (OVD)\n\n' +
+        'To get started: "Build an Open FD journey for an existing customer" or "Tell me about the Open SA journey"',
     }
   );
 
