@@ -56,6 +56,15 @@ const uiReference = UI_REFERENCE_FILES
 
 const stitchClient = readSource('stitch/stitch-client/stitch-client.ts');
 
+function loadScaffolding(scaffoldingDir) {
+  const files = ['App.tsx', 'JourneyContext.tsx', 'vite.config.ts'];
+  return files
+    .map((f) => `// ${f}\n${readFileSync(join(scaffoldingDir, f), 'utf-8')}`)
+    .join('\n\n');
+}
+
+const scaffolding = loadScaffolding(join(__dirname, 'scaffolding'));
+
 const SYSTEM_PROMPT = `${basePrompt}
 
 ---
@@ -81,7 +90,15 @@ ${uiReference}
 
 When generating imports, use ONLY what is exported here. Do not invent exports that are not listed.
 
-${componentExports}`;
+${componentExports}
+
+---
+
+# PART 7 — App Scaffolding Templates
+
+These are the canonical files for wiring a standalone Vite app. Use these exact patterns when generating a full app. Components are imported via the Vite aliases in vite.config.ts (e.g. \`@api-banking/design.actions.button\`). Do NOT use Bit workspace commands or raw Bit component IDs as import paths.
+
+${scaffolding}`;
 
 if (!process.env.ANTHROPIC_API_KEY) {
   console.error('ANTHROPIC_API_KEY environment variable is required');
