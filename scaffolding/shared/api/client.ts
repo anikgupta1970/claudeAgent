@@ -118,7 +118,7 @@ export function getCustomerAccounts(customerId: string) {
 }
 
 export function getProductConfig(product: string) {
-  return request<ProductConfigResponse[]>(`/config/mgmt/fi/products?product=${product}`);
+  return request<ProductConfigResponse[]>(`/fi/products/fd?product=${product}`);
 }
 
 export function calculateFD(params: {
@@ -135,12 +135,12 @@ export function calculateFD(params: {
 }
 
 export function getBranches() {
-  return request<BranchResponse[]>('/config/mgmt/fi/branches');
+  return request<BranchResponse[]>('/fi/branches');
 }
 
 export function getNomineeRelationships() {
-  return request<Array<{ choices: string[] }>>(
-    '/config/mgmt/fi/enums?name=nominee.relationship',
+  return request<Record<string, { name: string; mode: string; choices: string[] }>>(
+    '/fi/enums?name=nominee.relationship',
   );
 }
 

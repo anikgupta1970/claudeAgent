@@ -81,7 +81,7 @@ export default function BankDetails() {
     setRelLoading(true);
     try {
       const res = await getNomineeRelationships();
-      const arr: string[] = Array.isArray(res) ? (res[0]?.choices ?? []) : ['Spouse', 'Child', 'Parent', 'Sibling', 'Other'];
+      const arr: string[] = Object.values(res)[0]?.choices ?? ['Spouse', 'Child', 'Parent', 'Sibling', 'Other'];
       setRelationships(arr);
     } catch {
       setRelationships(['Spouse', 'Child', 'Parent', 'Sibling', 'Other']);
