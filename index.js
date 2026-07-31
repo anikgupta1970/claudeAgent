@@ -28,7 +28,7 @@ function loadScaffolding(scaffoldingDir) {
       const full = join(dir, entry);
       if (statSync(full).isDirectory()) {
         walk(full);
-      } else if (/\.(tsx?|[sc]ss)$/.test(entry)) {
+      } else if (/\.(tsx?|css|scss)$/.test(entry)) {
         const rel = full.replace(scaffoldingDir + '/', '');
         entries.push(`// ${rel}\n${readFileSync(full, 'utf-8')}`);
       }
