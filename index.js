@@ -1,5 +1,5 @@
 import express from 'express';
-import { readFileSync } from 'fs';
+import { readFileSync, readdirSync, statSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
@@ -7,54 +7,12 @@ import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import Anthropic from '@anthropic-ai/sdk';
 
-import { readdirSync, statSync } from 'fs';
-
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-function loadFiles(componentsDir) {
-  const entries = [];
-  function walk(dir, filter) {
-    for (const entry of readdirSync(dir)) {
-      const full = join(dir, entry);
-      if (statSync(full).isDirectory()) {
-        walk(full, filter);
-      } else if (filter(entry, full)) {
-        const rel = full.replace(componentsDir + '/', '');
-        const content = readFileSync(full, 'utf-8');
-        entries.push(`// ${rel}\n${content}`);
-      }
-    }
-  }
-  walk(componentsDir, (entry) => entry === 'index.ts');
-  return entries.join('\n\n');
-}
-
-function readSource(relPath) {
-  return readFileSync(join(__dirname, 'components', relPath), 'utf-8');
-}
 
 const basePrompt = readFileSync(join(__dirname, 'prompt.txt'), 'utf-8');
 const stitchSkill = readFileSync(join(__dirname, 'Stitch-Skill.md'), 'utf-8');
 const uiSkillFD = readFileSync(join(__dirname, 'UI_SKILLS_FD.md'), 'utf-8');
-const componentExports = loadFiles(join(__dirname, 'components'));
-
-const UI_REFERENCE_FILES = [
-  'authentication/login/login.tsx',
-  'authentication/overlays/consent-modal/consent-modal.tsx',
-  'authentication/overlays/otp-modal/otp-modal.tsx',
-  'fixed-deposit/wizard/deposit-details/deposit-details.tsx',
-  'fixed-deposit/wizard/bank-details/bank-details.tsx',
-  'fixed-deposit/wizard/funding-step/funding-step.tsx',
-  'fixed-deposit/wizard/preview-step/preview-step.tsx',
-  'fixed-deposit/wizard/submit-form/submit-form.tsx',
-  'fixed-deposit/wizard/steps-registry/steps-registry.tsx',
-  'stitch/branch-selector/branch-selector.tsx',
-  'stitch/branch-selector/branch-selector-base.tsx',
-];
-
-const uiReference = UI_REFERENCE_FILES
-  .map(f => `// ${f}\n${readSource(f)}`)
-  .join('\n\n');
 
 function loadScaffolding(scaffoldingDir) {
   const entries = [];
@@ -91,23 +49,7 @@ ${uiSkillFD}
 
 ---
 
-# PART 4 — Existing UI Implementations (reference these exactly)
-
-These are the actual implemented components. When building any journey, replicate these patterns exactly — same structure, same design tokens, same component usage, same props. Do not deviate from these implementations.
-
-${uiReference}
-
----
-
-# PART 5 — Component Public Exports (index.ts files)
-
-When generating imports, use ONLY what is exported here. Do not invent exports that are not listed.
-
-${componentExports}
-
----
-
-# PART 6 — App Scaffolding Templates
+# PART 4 — App Scaffolding Templates
 
 These are the canonical files for wiring a standalone Vite app. The scaffolding is organized into two directories:
 
