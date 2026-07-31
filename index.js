@@ -1,3 +1,6 @@
+import { webcrypto } from 'crypto';
+if (!globalThis.crypto) globalThis.crypto = webcrypto;
+
 import express from 'express';
 import { readFileSync, readdirSync, statSync } from 'fs';
 import { fileURLToPath } from 'url';
