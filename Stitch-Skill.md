@@ -1,6 +1,6 @@
 # Stitch Backend Capabilities Reference
 
-Comprehensive reference for all Stitch API and Config Management API capabilities. Generated from `stitch-specs.yaml` and `config-mgmt-api.yaml`. This file is the single authoritative input for backend capabilities.
+Comprehensive reference for all Stitch API and Config Management API capabilities. Generated from `stitch-config-api-oas-27th-Feb.yml`. This file is the single authoritative input for backend capabilities.
 
 ---
 
@@ -11,7 +11,7 @@ Comprehensive reference for all Stitch API and Config Management API capabilitie
 3. [Common Patterns](#common-patterns)
 4. [Error Format](#error-format)
 5. [Stitch API Endpoints](#stitch-api-endpoints)
-6. [Config Management API Endpoints](#config-management-api-endpoints)
+6. [Runtime Config Lookup Endpoints](#runtime-config-lookup-endpoints-use-these-in-app-code)
 7. [Instruction Types Reference](#instruction-types-reference)
 8. [Section Types Reference](#section-types-reference)
 9. [Shared Schemas & Validations](#shared-schemas--validations)
@@ -27,7 +27,7 @@ Comprehensive reference for all Stitch API and Config Management API capabilitie
 
 **Two APIs:**
 - **Stitch API** — runtime operations (forms, payments, customer management)
-- **Config Management API** — admin configuration (products, branches, enums, originators, apps, terms, system settings)
+- **Config Lookup API** — runtime configuration lookups (products, branches, enums, originators, apps, terms). Use the `/fi/` prefix endpoints from app code. The admin CRUD endpoints (`/config/mgmt/fi/`) exist but are internal — do not call them from app code.
 
 ---
 
@@ -69,18 +69,18 @@ Repeating the same key with the same body returns the same response without re-p
 
 **Poll until:** `status` is `COMPLETED`, `REJECTED`, or `FAILED` (not `PROGRESSING`).
 
-### Pagination (Config API)
+### Pagination (Config Lookup API)
 
-All config list endpoints support query params `page` (default: 0) and `size` (default: 20). Some resources (terms, system/fi) have explicit pagination; others return arrays without pagination params.
+The runtime `/fi/` config lookup endpoints return arrays without pagination parameters. Results are filtered via query params (e.g., `code`, `product`, `country`). The internal admin endpoints support `page` and `size` params but those are not available via the runtime endpoints.
 
 ### Draft-Aware Lifecycle
 
-All config entities follow: `DRAFT → PUBLISHED` via promote.
+All config entities follow: `DRAFT → PUBLISHED` via promote (internal admin flow — not called from app code).
 
-1. `POST /config/mgmt/fi/{resource}` — creates in DRAFT
-2. `PUT /config/mgmt/fi/{resource}/{id}/promote` — promotes to PUBLISHED
+1. Admin creates entity in DRAFT via internal `/config/mgmt/fi/{resource}` endpoints
+2. Admin promotes to PUBLISHED via internal promote endpoint
 
-Only PUBLISHED entities are active in Stitch runtime operations.
+Only PUBLISHED entities are visible and active when queried via the runtime `/fi/` endpoints.
 
 ### W3C Distributed Tracing
 
@@ -263,7 +263,7 @@ Calculate FD maturity amount for given principal and tenure.
   "productVariant": "string",
   "depositAmount": { "amount": "1000.00", "currency": "INR" },
   "tenure": "P1Y6M",
-  "openMode": "solo | joint | minor | replicate",
+  "openMode": "solo | joint | minor",
   "interestPaymentOption": "at_maturity | monthly | quarterly"
 }
 ```
@@ -486,168 +486,310 @@ Get the status of an initiated payment.
 
 ---
 
-## Config Management API Endpoints
+## Runtime Config Lookup Endpoints (use these in app code)
 
-All config resources share these response codes: 200/201/204 (success), 400, 401, 403, 404, 424, 500.
+These are the correct runtime-facing endpoints that app code should call. All endpoints are GET-only and use the `/fi/` prefix. Response codes: 200 (success), 400, 401, 403, 404, 424, 500.
 
-All resources follow this CRUD + promote pattern:
-
-| Method | Path | Description |
-|--------|------|-------------|
-| GET | `/config/mgmt/fi/{resource}` | List (with filter query params) |
-| POST | `/config/mgmt/fi/{resource}` | Add (creates as DRAFT) → 201 |
-| GET | `/config/mgmt/fi/{resource}/count` | Count |
-| GET | `/config/mgmt/fi/{resource}/{id}` | Get by ID |
-| PUT | `/config/mgmt/fi/{resource}/{id}` | Update → 201 |
-| DELETE | `/config/mgmt/fi/{resource}/{id}` | Delete → 204 |
-| PUT | `/config/mgmt/fi/{resource}/{id}/promote` | Promote DRAFT→PUBLISHED → 200 |
+> **Note:** The admin CRUD endpoints (`/config/mgmt/fi/`) exist but are internal — do not call them from app code.
 
 ---
 
-### /config/mgmt/fi/apps
+### GET /fi/apps
 
-Manage client application registrations.
+List registered client applications.
 
-**Entity schema (`AppEntity`):**
+**Auth:** Bearer  
+**Response:** 200 OK — array of `App` objects
+
+**Query params:**
+- `code` — filter by app code (`^[a-z0-9_]+$`)
+- `originator` — filter by originator code (`^[a-z0-9_]{3,10}$`)
+
+**Response schema (`App`):**
 ```json
 {
-  "code": "string (^[a-z0-9_]+$, no length limit)",
-  "originator": "string (^[a-z0-9_]{3,10}$)"
+  "code": "swiggy-mobile (^[a-z0-9_]+$)",
+  "originator": "swiggy (^[a-z0-9_]{3,10}$)"
 }
 ```
 
-**List query params:** `code`, `originator`, `id`, `createdBy`, `updatedBy`, `version`, `draftForId`, `draftForVersion`, `namedQuery`, `sort`
-
 ---
 
-### /config/mgmt/fi/branches
+### GET /fi/branches
 
-Manage bank branches.
+List bank branches for given search criteria.
 
-**Entity schema (`BranchEntity`):**
+**Auth:** Bearer  
+**Response:** 200 OK — array of `Branch` objects
+
+**Query params:**
+- `country` — ISO 3166-1 alpha-2 country code (REQUIRED)
+- `city` — city name (`^[A-Za-z0-9]+$`, 1-40 chars)
+- `state` — ISO 3166-2 state code
+- `postalCode` — 6-digit postal code (`^\d{6}$`)
+
+**Response schema (`Branch`):** Note — no `id` or `status` fields in runtime response.
 ```json
 {
-  "code": "string (^\\d{1,5}$)",
-  "ifsc": "string (IFSC format, ^[A-Z]{4}0[A-Z0-9]{6}$)",
-  "name": "string",
-  "address": "string",
-  "postalCode": "string",
-  "city": "string",
-  "state": "string (ISO 3166-2)",
-  "country": "string (ISO 3166-1 alpha-2)"
+  "code": "string",
+  "ifsc": "SBIN0001234 (^[A-Z]{4}0[0-9A-Z]{6}$)",
+  "name": "K G Marg (^[A-Za-z ]+, 1-40 chars)",
+  "address": "209-214 Kailash Building (^[A-Za-z0-9,\\-.:@()_\\'# ]+, 5-40 chars)",
+  "postalCode": "400102 (^\\d{6}$)",
+  "city": "Mumbai (^[A-Za-z0-9]+$, 1-40 chars)",
+  "state": "IN-MH (ISO 3166-2)",
+  "country": "IN (ISO 3166-1 alpha-2)"
 }
 ```
 
-**List query params:** `code`, `id`, `createdBy`, `updatedBy`, `version`, `draftForId`, `draftForVersion`, `namedQuery`, `sort`
-
 ---
 
-### /config/mgmt/fi/enums
+### GET /fi/enums
 
-Manage enumeration definitions used for form validation.
+List available enumeration definitions.
 
-**Entity schema (`EnumEntity`):**
+**Auth:** Bearer  
+**Response:** 200 OK — **Map object** (NOT an array): `{ "enum-name": { name, mode, choices[] } }`
+
+**Query params:**
+- `name` — filter by enum name (1-50 chars)
+- `mode` — filter by enum mode (`strict` | `lenient`)
+
+**Response schema (`Enumeration` map):**
 ```json
 {
-  "name": "string",
-  "type": "OPEN | CLOSED",
-  "mode": "strict | lenient",
-  "choices": ["string"]
+  "gender": {
+    "name": "gender",
+    "mode": "strict",
+    "choices": ["male", "female", "other"]
+  },
+  "nominee.relationship": {
+    "name": "nominee.relationship",
+    "mode": "lenient",
+    "choices": []
+  }
 }
 ```
 
-**EnumType** (UPPERCASE): `OPEN`, `CLOSED`  
-**EnumMode** (lowercase): `strict`, `lenient`
-
-- `CLOSED` / `strict` — only pre-defined choices are valid
-- `OPEN` / `lenient` — pre-defined choices plus free-text are valid
-
-**List query params:** `name`, `type`, `id`, `createdBy`, `updatedBy`, `version`, `draftForId`, `draftForVersion`, `namedQuery`, `sort`
+**Important:** `ClosedEnum.mode` is `"STRICT"` (uppercase) while `OpenEnum` uses `EnumMode` (lowercase `strict`/`lenient`).
 
 ---
 
-### /config/mgmt/fi/originators
+### GET /fi/enums/{name}/choices
 
-Manage originator (channel partner) registrations.
+List choices for a specific enumeration.
 
-**Entity schema (`OriginatorEntity`):**
+**Auth:** Bearer  
+**Response:** 200 OK — array of choice strings
+
+**Path params:**
+- `name` — enum name (REQUIRED, 1-50 chars, `\S`)
+
+**Query params:**
+- `choice` — optional filter to match a specific choice
+
+**404 response:** `{ "status": 404, "title": "Not Found", "detail": "Enum choices not found for enum: {enumName}" }`
+
+---
+
+### GET /fi/locations/cities
+
+List cities where a given facility exists.
+
+**Auth:** Bearer  
+**Response:** 200 OK — `Cities` object
+
+**Query params:**
+- `facility` — facility type (REQUIRED) — currently only `branch`
+- `country` — ISO 3166-1 alpha-2 country code
+- `state` — ISO 3166-2 state code
+- `district` — district name
+
+**Response schema (`Cities`):**
 ```json
 {
-  "code": "string (^[a-z0-9_]{3,10}$)"
+  "facility": "branch",
+  "country": "IN",
+  "state": "IN-MH",
+  "district": "Thane",
+  "cities": ["Mumbai", "Pune", "Nashik"]
 }
 ```
 
-The `code` value is what appears in the `originator.code` field of `OfficeUseSection` in forms.
-
-**List query params:** `code`, `id`, `createdBy`, `updatedBy`, `version`, `draftForId`, `draftForVersion`, `namedQuery`, `sort`
-
 ---
 
-### /config/mgmt/fi/products
+### GET /fi/locations/states
 
-Manage banking product definitions.
+List states where a given facility exists.
 
-**Entity schema (`ProductEntity`):**
+**Auth:** Bearer  
+**Response:** 200 OK — `States` object
+
+**Query params:**
+- `facility` — facility type (REQUIRED) — currently only `branch`
+- `country` — ISO 3166-1 alpha-2 country code (REQUIRED)
+
+**Response schema (`States`):**
 ```json
 {
-  "product": "string (^[a-z0-9_]+$)",
-  "terms": { /* FDProductTerms or SAProductTerms */ },
-  "eligibility": { /* EligibilityConfig */ }
+  "facility": "branch",
+  "country": "IN",
+  "states": ["IN-MH", "IN-KA", "IN-DL"]
 }
 ```
 
-**FDProductTerms** — FD-specific terms (tenures, interest rates, limits)  
-**SAProductTerms** — SA-specific terms (minimum balance, features)
+---
 
-**List query params:** `product`, `id`, `createdBy`, `updatedBy`, `version`, `draftForId`, `draftForVersion`, `namedQuery`, `sort`
+### GET /fi/originators
+
+List registered originator (channel partner) codes.
+
+**Auth:** Bearer  
+**Response:** 200 OK — array of `Originator` objects
+
+**Query params:**
+- `code` — filter by originator code (`^[a-z0-9_]{3,10}$`)
+
+**Response schema (`Originator`):**
+```json
+{
+  "code": "amazon (^[a-z0-9_]{3,10}$)"
+}
+```
 
 ---
 
-### /config/mgmt/fi/terms
+### GET /fi/products
 
-Manage terms and conditions documents.
+List all product variants (FD and SA combined).
 
-**Entity schema (`TermEntity`):**
+**Auth:** Bearer  
+**Response:** 200 OK — array of `Product` objects
+
+**Query params:**
+- `product` — filter by product name (`^[a-z0-9_]+$`)
+
+**Response schema (`Product`):**
 ```json
 {
-  "code": "string (^[a-z0-9_]+$)",
+  "product": "fd_basic_original",
+  "terms": { /* FDProductTerms or SAProductTerms — see /fi/products/fd and /fi/products/sa */ },
+  "eligibility": { /* IndividualEligibility or EntityEligibility */ }
+}
+```
+
+**IndividualEligibility schema:**
+```json
+{
+  "customerType": "individual",
+  "age": { "min": { "value": 18, "inclusive": true }, "max": { "value": 70, "inclusive": true } },
+  "gender": { "allow": ["male", "female", "other"], "empty": false },
+  "staff": { "allow": [false], "empty": false },
+  "taxResidency": { "allow": ["IN"], "empty": false },
+  "citizenship": { "allow": ["IN"], "empty": false }
+}
+```
+
+**EntityEligibility schema:**
+```json
+{
+  "customerType": "entity"
+}
+```
+
+---
+
+### GET /fi/products/fd
+
+List FD product variants with filtering.
+
+**Auth:** Bearer  
+**Response:** 200 OK — array of `Product` objects (each with `FDProductTerms`)
+
+**Query params:**
+- `product` — product name (`^[a-z0-9_]+$`)
+- `currency` — ISO 4217 currency code (e.g., `INR`)
+- `customerType` — `individual` | `entity`
+- `openMode` — `solo` | `joint` | `minor`
+- `nominationMethod` — `successive` | `simultaneous`
+- `tenure` — ISO 8601 duration (e.g., `P1Y6M`)
+- `initialDeposit` — numeric amount
+- `interestPaymentOption` — `at_maturity` | `monthly` | `quarterly`
+- `maturityOption` — `close` | `renew` | `transfer`
+
+**FDProductTerms schema:**
+```json
+{
+  "product": "fd_basic_original",
+  "terms": {
+    "productCategory": "FD",
+    "interestPaymentOption": { "allow": ["at_maturity", "monthly", "quarterly"], "empty": false },
+    "maturityOption": { "allow": ["close", "renew", "transfer"], "empty": false },
+    "tenure": {
+      "min": { "value": "P7D", "inclusive": true, "unbounded": false },
+      "max": { "value": "P10Y", "inclusive": true, "unbounded": false }
+    },
+    "initialDeposit": {
+      "min": { "value": { "amount": "5000.00", "currency": "INR" }, "inclusive": true },
+      "max": { "value": { "amount": "10000000.00", "currency": "INR" }, "inclusive": true }
+    }
+  }
+}
+```
+
+---
+
+### GET /fi/products/sa
+
+List SA product variants with filtering.
+
+**Auth:** Bearer  
+**Response:** 200 OK — array of `Product` objects (each with `SAProductTerms`)
+
+**Query params:**
+- `product` — product name (`^[a-z0-9_]+$`)
+- `currency` — ISO 4217 currency code
+- `openMode` — `solo` | `joint` | `minor`
+- `nominationMethod` — `successive` | `simultaneous`
+- `initialDeposit` — numeric amount
+
+**SAProductTerms schema:**
+```json
+{
+  "product": "sa_basic_original",
+  "terms": {
+    "productCategory": "SA",
+    "openMode": { "allow": ["solo", "joint", "minor"], "empty": false },
+    "nominationMethod": { "allow": ["successive", "simultaneous"], "empty": false },
+    "initialDeposit": {
+      "min": { "value": { "amount": "0.00", "currency": "INR" }, "inclusive": true },
+      "max": { "value": { "amount": "100000.00", "currency": "INR" }, "inclusive": true }
+    }
+  }
+}
+```
+
+---
+
+### GET /fi/terms
+
+List terms and conditions documents.
+
+**Auth:** Bearer  
+**Response:** 200 OK — array of `Term` objects
+
+**Query params:**
+- `code` — filter by term code (`^[a-z0-9_]+$`)
+
+**Response schema (`Term`):**
+```json
+{
+  "code": "terms_v1 (^[a-z0-9_]+$)",
   "summary": "string (10-500 chars)",
-  "url": "string (optional, 10-2048 chars, must match https?://.*)",
+  "url": "https://bank.com/terms (optional, 10-2048 chars)",
   "content": "string (10-2048 chars)"
 }
 ```
-
-**List supports pagination:** `page` (default 0), `size` (default 20)
-
-**List query params:** `code`, `id`, `page`, `size`, `createdBy`, `updatedBy`, `version`, `draftForId`, `draftForVersion`, `namedQuery`, `sort`
-
----
-
-### /config/mgmt/system/fi
-
-System-level Financial Institution configuration. Supports pagination.
-
-**Entity schema (`FIEntity`):**
-```json
-{
-  "id": "string",
-  "status": "DRAFT | PUBLISHED",
-  "code": "string (optional)"
-}
-```
-
-**Endpoints:** GET list (with `page`, `size`), POST, GET count, GET /{id}, PUT /{id}, DELETE /{id}, PUT /{id}/promote
-
----
-
-### /config/mgmt/system/registry/enums
-
-Read-only registry of built-in system enum definitions (not user-manageable).
-
-**Method:** GET only  
-**Response:** array of `EnumSpec` (oneOf `ClosedEnum` | `OpenEnum`)
-
-**Query params:** `mode`, `name`, `type`
 
 ---
 
@@ -700,7 +842,7 @@ All instructions are submitted in the `instructions` array of `POST /forms`. Eac
   "interestPaymentInstruction": { /* InterestPaymentInstruction */ },
   "maturityInstruction": { /* MaturityInstruction */ },
   "branchCode": "string (^[0-9]+$, 1-5 chars)",
-  "openMode": "solo | joint | minor | replicate",
+  "openMode": "solo | joint | minor",
   "holder": { /* SoloCustomerRef — required when openMode=solo */ },
   "holders": [ /* JointHolder[], exactly 2 — required when openMode=joint */ ],
   "minor": { /* MinorCustomerRef — required when openMode=minor */ },
@@ -1345,10 +1487,10 @@ Unique Customer Identification Code:
 
 ### BranchCode
 Pattern: `^[0-9]+$`, length 1–5  
-Must match a branch defined in `/config/mgmt/fi/branches`
+Must match a branch returned by `GET /fi/branches`
 
 ### ProductVariant
-Pattern: `\S` (non-whitespace) — must match a product defined in `/config/mgmt/fi/products`
+Pattern: `\S` (non-whitespace) — must match a product name returned by `GET /fi/products`, `GET /fi/products/fd`, or `GET /fi/products/sa`
 
 ---
 
@@ -1409,7 +1551,6 @@ skipped
 solo       — Single holder
 joint      — Two joint holders
 minor      — Minor holder with guardian
-replicate  — Replicate from existing account
 ```
 
 ### AccountOpenMode (SA, NRE SA, NRO SA)
@@ -1418,7 +1559,6 @@ solo       — Single holder
 joint      — Two joint holders
 minor      — Minor holder with guardian
 ```
-Note: SA does NOT support `replicate` mode (only FD does).
 
 ### AccountOperatedBy
 ```
@@ -1620,16 +1760,49 @@ UPDATE
 DELETE
 ```
 
-### EnumType (Config API — UPPERCASE)
+### EnumType (UPPERCASE)
 ```
 OPEN     — Allows free-text in addition to defined choices
 CLOSED   — Only pre-defined choices allowed
 ```
 
-### EnumMode (Config API — lowercase)
+### EnumMode and ClosedEnum mode casing
+
+**Important casing distinction:**
+- `OpenEnum.mode` uses `EnumMode` (lowercase): `strict` | `lenient`
+- `ClosedEnum.mode` is always `"STRICT"` (uppercase string literal, not the EnumMode type)
+
 ```
-strict    — Strict validation against enum choices
-lenient   — Lenient validation
+EnumMode (lowercase — used by OpenEnum):
+  strict    — Strict validation against enum choices
+  lenient   — Lenient validation (free-text allowed)
+
+ClosedEnum.mode (uppercase string literal):
+  STRICT    — Only pre-defined choices allowed (always STRICT for CLOSED enums)
+```
+
+### ResidentialStatus
+```
+resident_individual      — Resident Individual
+non_resident_individual  — Non Resident Individual
+foreign_national         — Foreign National
+person_of_indian_origin  — Person of Indian Origin
+```
+
+### LoginCredentialType
+```
+mobile_pan   — Login using mobile number and PAN
+mobile_dob   — Login using mobile number and date of birth
+```
+
+### AccountPermission
+```
+debit   — Allows debit transactions
+```
+
+### Facility
+```
+branch   — Bank branch facility (physical branch)
 ```
 
 ---
@@ -1647,10 +1820,18 @@ Stitch processes instructions in the order submitted. Put customer creation befo
 Use `PayoutAccountRef` with `type: "ref"` and `ref: "i-X"` to reference an account created by another instruction in the same form. The target instruction must be `open_sa` or `open_fd`.
 
 ### Originator Code
-Must be registered in `/config/mgmt/fi/originators` and promoted to PUBLISHED before use in forms.
+Must be registered and active (PUBLISHED) in the config system. Look up valid codes via `GET /fi/originators`. The `originator.code` value in `OfficeUseSection` must match a code returned by that endpoint.
 
 ### Product Variant
-Must match a product registered in `/config/mgmt/fi/products` with matching `productCategory` (fd or sa).
+Must match a product registered and active in the config system. Look up valid products via `GET /fi/products`, `GET /fi/products/fd`, or `GET /fi/products/sa`. The `productVariant` must match `product` field in the response, with matching `productCategory` (fd or sa).
 
 ### Branch Code
-Must match a branch registered in `/config/mgmt/fi/branches`.
+Must match a branch registered and active in the config system. Look up valid branches via `GET /fi/branches`. The `branchCode` must match the `code` field in a branch response object.
+
+### Config Lookup vs Admin Paths
+Always use the `/fi/` prefix endpoints for runtime lookups from app code:
+- `GET /fi/apps`, `GET /fi/branches`, `GET /fi/enums`, `GET /fi/enums/{name}/choices`
+- `GET /fi/locations/cities`, `GET /fi/locations/states`
+- `GET /fi/originators`, `GET /fi/products`, `GET /fi/products/fd`, `GET /fi/products/sa`, `GET /fi/terms`
+
+Do NOT use `/config/mgmt/fi/` paths in app code — those are internal admin endpoints.
