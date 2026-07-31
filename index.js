@@ -3,7 +3,7 @@ import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
-import { SSEServerTransport } from '@modelcontextprotocol/sdk/server/sse.js';
+import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
 import Anthropic from '@anthropic-ai/sdk';
 
@@ -166,8 +166,6 @@ function createMcpServer() {
 const app = express();
 app.use(express.json());
 
-const transports = new Map();
-
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok', service: 'banking-journey-builder' });
 });
@@ -212,25 +210,11 @@ echo ""
   res.send(script);
 });
 
-app.get('/mcp', async (req, res) => {
-  const transport = new SSEServerTransport('/mcp/message', res);
+app.all('/mcp', async (req, res) => {
+  const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
   const mcpServer = createMcpServer();
-
-  transports.set(transport.sessionId, transport);
-  res.on('close', () => transports.delete(transport.sessionId));
-
   await mcpServer.connect(transport);
-});
-
-app.post('/mcp/message', async (req, res) => {
-  const { sessionId } = req.query;
-  const transport = transports.get(sessionId);
-
-  if (!transport) {
-    return res.status(404).json({ error: 'Session not found' });
-  }
-
-  await transport.handlePostMessage(req, res);
+  await transport.handleRequest(req, res, req.body);
 });
 
 const PORT = process.env.PORT || 3000;
