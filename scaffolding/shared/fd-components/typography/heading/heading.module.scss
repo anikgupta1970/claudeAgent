@@ -1,0 +1,41 @@
+.heading {
+  font-family: var(--typography-font-family);
+  line-height: var(--typography-line-height-heading);
+  color: var(--colors-text-primary);
+  margin: 0;
+  font-weight: var(--typography-font-weight-bold);
+}
+
+.inverse {
+  color: var(--colors-text-inverse) !important;
+}
+
+.h1 {
+  font-size: var(--typography-sizes-heading-h1);
+  font-weight: var(--typography-font-weight-bold);
+}
+
+.h2 {
+  font-size: var(--typography-sizes-heading-h2);
+  font-weight: var(--typography-font-weight-bold);
+}
+
+.h3 {
+  font-size: var(--typography-sizes-heading-h3);
+  font-weight: var(--typography-font-weight-semi-bold);
+}
+
+.h4 {
+  font-size: var(--typography-sizes-heading-h4);
+  font-weight: var(--typography-font-weight-semi-bold);
+}
+
+.h5 {
+  font-size: var(--typography-sizes-heading-h5);
+  font-weight: var(--typography-font-weight-medium);
+}
+
+.h6 {
+  font-size: var(--typography-sizes-heading-h6);
+  font-weight: var(--typography-font-weight-medium);
+}

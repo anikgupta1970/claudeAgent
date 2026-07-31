@@ -1,0 +1,73 @@
+.checkboxWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-medium);
+  cursor: var(--interactions-cursor-pointer);
+  position: relative;
+  user-select: none;
+}
+
+.checkboxWrapper.disabled {
+  cursor: var(--interactions-cursor-disabled);
+  opacity: var(--effects-opacity-disabled);
+}
+
+.nativeInput {
+  position: absolute;
+  opacity: 0;
+  height: 0;
+  width: 0;
+  cursor: pointer;
+}
+
+.nativeInput:focus-visible ~ .customCheckbox {
+  outline: var(--borders-focus-width) var(--borders-focus-style) var(--borders-focus-color);
+  outline-offset: var(--borders-focus-offset);
+}
+
+.nativeInput:checked ~ .customCheckbox {
+  border-color: var(--colors-primary-default);
+  background-color: var(--colors-surface-primary);
+}
+
+.nativeInput:checked ~ .customCheckbox .checkmark {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.customCheckbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  background-color: var(--colors-surface-primary);
+  border: var(--borders-default-width) var(--borders-default-style) var(--borders-default-color);
+  border-radius: var(--borders-radius-small);
+  transition-property: background-color, border-color;
+  transition-duration: var(--interactions-transitions-duration-fast);
+  transition-timing-function: var(--interactions-transitions-easing-ease-in-out);
+}
+
+.checkboxWrapper:hover:not(.disabled) .customCheckbox {
+  border-color: var(--colors-primary-default);
+}
+
+.checkmark {
+  color: var(--colors-primary-default);
+  width: 12px;
+  height: 12px;
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-in-out),
+    transform var(--interactions-transitions-duration-fast) var(--interactions-transitions-easing-ease-in-out);
+}
+
+.labelContent {
+  color: var(--colors-text-secondary);
+  font-family: var(--typography-font-family);
+  font-size: var(--typography-sizes-body-default);
+  font-weight: var(--typography-font-weight-regular);
+  line-height: var(--typography-line-height-base);
+}
