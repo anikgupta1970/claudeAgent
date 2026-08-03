@@ -23,17 +23,35 @@ When asked about this product, say:
 
 ## Journey — Both Flows
 
-Steps 1, 2, 3, 5, 6, and 7 are identical across both flows. Step 4 (KYC) differs — see each flow below.
+Steps 1–3, 5, 6, 7, and 8 are identical across both flows. Step 4 (KYC) differs — see each flow below.
 
-No data is sent to the bank until Step 6.
+No data is sent to the bank until Step 7.
 
 ```
-Personal Details → Address → Contact & Employment → KYC → Account Preferences → Preview → Done
+Mobile Verification → Personal Details → Address → Contact & Employment → KYC → Account Preferences → Preview → Done
 ```
 
 ---
 
-### Step 1 — Personal Details
+### Step 1 — Mobile Verification
+
+Fields:
+- Mobile number (pre-fill +91, customer enters 10 digits)
+
+On Continue:
+- Call `POST /auth/otp/send` with `{ mobile, credentialType: "mobile_pan" }`
+- Store returned `sessionId`
+- Open OTP modal (6-digit input)
+
+On OTP submit:
+- Call `POST /auth/otp/verify` with `{ sessionId, otp, mobile }`
+- On success: store `token` for all subsequent API calls; move to Step 2
+
+OTP modal behaviour: show resend link after 30 seconds. Resend calls `POST /auth/otp/send` again and replaces `sessionId`.
+
+---
+
+### Step 2 — Personal Details
 
 Fields:
 - First name, middle name (optional), last name
@@ -42,11 +60,11 @@ Fields:
 - Marital status (dropdown)
 - PAN number
 
-On Continue: save in state, move to Step 2.
+On Continue: save in state, move to Step 3.
 
 ---
 
-### Step 2 — Address
+### Step 3 — Address
 
 Fields:
 - Address lines, city, state (dropdown), PIN code
@@ -54,11 +72,11 @@ Fields:
 
 If permanent address is the same as current: show a checkbox. When ticked, hide the permanent address form and copy current address values.
 
-On Continue: save both addresses, move to Step 3.
+On Continue: save both addresses, move to Step 4.
 
 ---
 
-### Step 3 — Contact & Employment
+### Step 4 — Contact & Employment
 
 Fields:
 - Mobile number (pre-fill +91, customer enters 10 digits)
@@ -71,11 +89,11 @@ Fields:
 
 If residential status is anything other than Resident Individual: show an info message — *"NRI or foreign national accounts require additional documentation. Please contact your branch."*
 
-On Continue: save, move to Step 4.
+On Continue: save, move to Step 5.
 
 ---
 
-### Step 5 — Account Preferences
+### Step 6 — Account Preferences
 
 Branch selection — "Search Branch" button opens a panel. Search by location (State → City → Branch) or by PIN code.
 
@@ -83,21 +101,21 @@ Nominee (optional) — "Add Nominee" checkbox reveals: relationship, full name, 
 
 Product variant is pre-selected from bank configuration — do not show a product selector.
 
-On Continue: save, move to Step 6.
+On Continue: save, move to Step 7.
 
 ---
 
-### Step 6 — Preview
+### Step 7 — Preview
 
-Read-only summary of all data entered across steps 1–5. No inline editing.
+Read-only summary of all data entered across steps 2–6. No inline editing.
 
 Sections: Personal Details · Address · Contact & Employment · KYC · Account Preferences · Nominee Details (if added).
 
-On Confirm: disable button → spinner "Submitting your application…" → `POST /forms` → move to Step 7.
+On Confirm: disable button → spinner "Submitting your application…" → `POST /forms` → move to Step 8.
 
 ---
 
-### Step 7 — Done
+### Step 8 — Done
 
 Poll `POST /forms/status` until `COMPLETED`, `REJECTED`, or `FAILED` (stop after ~20 seconds).
 
@@ -113,9 +131,9 @@ Always show the reference ID and a **Back to Home** button.
 
 **When to use:** Customer is onboarding via a registered partner originator (non-bank channel).
 
-All steps as above. Step 4 is:
+All steps as above. Step 5 is:
 
-### Step 4 — KYC (Partner Channel)
+### Step 5 — KYC (Partner Channel)
 
 The only available method is **Aadhaar OTP based eKYC**. Do not show a method selector — go directly to the eKYC form.
 
@@ -131,9 +149,9 @@ Fields:
 
 **When to use:** Customer is onboarding through the bank's own app, website, or branch kiosk.
 
-All steps as above. Step 4 is:
+All steps as above. Step 5 is:
 
-### Step 4 — KYC (Non-Partner Channel)
+### Step 5 — KYC (Non-Partner Channel)
 
 Show a method selector. Customer picks one of three options:
 
@@ -155,8 +173,9 @@ Show a method selector. Customer picks one of three options:
 
 | Component | Steps using it |
 |-----------|---------------|
-| Card Radio | Step 4 (KYC method, biometric type) |
-| Search Branch Modal | Step 5 |
-| Add Nominee Modal | Step 5 |
-| Read-Only Preview | Step 6 |
-| Success Screen | Step 7 |
+| OTP Modal | Step 1 (mobile verification) |
+| Card Radio | Step 5 (KYC method, biometric type) |
+| Search Branch Modal | Step 6 |
+| Add Nominee Modal | Step 6 |
+| Read-Only Preview | Step 7 |
+| Success Screen | Step 8 |
