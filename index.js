@@ -161,7 +161,7 @@ function createMcpServer() {
   server.setRequestHandler(ListToolsRequestSchema, async () => ({
     tools: [
       {
-        name: 'banking_assistant',
+        name: 'stitch_assistant',
         description:
           'Build banking onboarding UI journeys and generate correct Stitch API payloads. ' +
           'Use for: building FD/SA/customer onboarding journeys, generating form payloads, ' +
@@ -185,7 +185,7 @@ function createMcpServer() {
   // Tool call — returns full context for Claude (client) to generate the response.
   // No Anthropic API call here; the calling Claude instance uses its own subscription.
   server.setRequestHandler(CallToolRequestSchema, async (request) => {
-    if (request.params.name !== 'banking_assistant') {
+    if (request.params.name !== 'stitch_assistant') {
       throw new Error(`Unknown tool: ${request.params.name}`);
     }
     const { query } = request.params.arguments;
